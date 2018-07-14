@@ -1,10 +1,10 @@
 --[[
-        luaunit.lua
+        LUAunit.LUA
 
 Description: A unit testing framework
-Homepage: https://github.com/bluebird75/luaunit
+Homepage: https://github.com/bluebird75/LUAunit
 Development by Philippe Fremy <phil@freehackers.org>
-Based on initial work of Ryu, Gwang (http://www.gpgstudy.com/gpgiki/LuaUnit)
+Based on initial work of Ryu, Gwang (http://www.gpgstudy.com/gpgiki/LUAUnit)
 License: BSD License, see LICENSE.txt
 ]]--
 
@@ -15,9 +15,9 @@ local M={}
 M.private = {}
 
 M.VERSION='3.3'
-M._VERSION=M.VERSION -- For LuaUnit v2 compatibility
+M._VERSION=M.VERSION -- For LUAUnit v2 compatibility
 
--- a version which distinguish between regular Lua and LuaJit
+-- a version which distinguish between regular LUA and LUAJit
 M._LUAVERSION = (jit and jit.version) or _VERSION
 
 --[[ Some people like assertEquals( actual, expected ) and some people prefer
@@ -30,13 +30,13 @@ M.LINE_LENGTH = 80
 M.TABLE_DIFF_ANALYSIS_THRESHOLD = 10    -- display deep analysis for more than 10 items
 M.LIST_DIFF_ANALYSIS_THRESHOLD  = 10    -- display deep analysis for more than 10 items
 
---[[ EPS is meant to help with Lua's floating point math in simple corner
+--[[ EPS is meant to help with LUA's floating point math in simple corner
 cases like almostEquals(1.1-0.1, 1), which may not work as-is (e.g. on numbers
 with rational binary representation) if the user doesn't provide some explicit
 error margin.
 
 The default margin used by almostEquals() in such cases is EPS; and since
-Lua may be compiled with different numeric precisions (single vs. double), we
+LUA may be compiled with different numeric precisions (single vs. double), we
 try to select a useful default for it dynamically. Note: If the initial value
 is not acceptable, it can be changed by the user to better suit specific needs.
 
@@ -48,7 +48,7 @@ if math.abs(1.1 - 1 - 0.1) > M.EPS then
     M.EPS = 2^-23 -- = machine epsilon for "float", ~1.19E-07
 end
 
--- set this to false to debug luaunit
+-- set this to false to debug LUAunit
 local STRIP_LUAUNIT_FROM_STACKTRACE = true
 
 M.VERBOSITY_DEFAULT = 10
@@ -65,12 +65,12 @@ M.DISABLE_DEEP_ANALYSIS = false
 -- we need to keep a copy of the script args before it is overriden
 local cmdline_argv = rawget(_G, "arg")
 
-M.FAILURE_PREFIX = 'LuaUnit test FAILURE: ' -- prefix string for failed tests
-M.SUCCESS_PREFIX = 'LuaUnit test SUCCESS: ' -- prefix string for successful tests finished early
+M.FAILURE_PREFIX = 'LUAUnit test FAILURE: ' -- prefix string for failed tests
+M.SUCCESS_PREFIX = 'LUAUnit test SUCCESS: ' -- prefix string for successful tests finished early
 
 
 
-M.USAGE=[[Usage: lua <your_test_suite.lua> [options] [testname1 [testname2] ... ]
+M.USAGE=[[Usage: LUA <your_test_suite.LUA> [options] [testname1 [testname2] ... ]
 Options:
   -h, --help:             Print this help
   --version:              Print version information
@@ -83,10 +83,10 @@ Options:
                           Possible values: text, tap, junit, nil
   -n, --name NAME:        For junit only, mandatory name of xml file
   -r, --repeat NUM:       Execute all tests NUM times, e.g. to trig the JIT
-  -p, --pattern PATTERN:  Execute all test names matching the Lua PATTERN
+  -p, --pattern PATTERN:  Execute all test names matching the LUA PATTERN
                           May be repeated to include several patterns
                           Make sure you escape magic chars like +? with %
-  -x, --exclude PATTERN:  Exclude all test names matching the Lua PATTERN
+  -x, --exclude PATTERN:  Exclude all test names matching the LUA PATTERN
                           May be repeated to exclude several patterns
                           Make sure you escape magic chars like +? with %
   testname1, testname2, ... : tests to run in the form of testFunction,
@@ -102,7 +102,7 @@ local is_equal -- defined here to allow calling from mismatchFormattingPureList
 ----------------------------------------------------------------
 
 local function pcall_or_abort(func, ...)
-    -- unpack is a global function for Lua 5.1, otherwise use table.unpack
+    -- unpack is a global function for LUA 5.1, otherwise use table.unpack
     local unpack = rawget(_G, "unpack") or table.unpack
     local result = {pcall(func, ...)}
     if not result[1] then
@@ -203,7 +203,7 @@ local function sortedPairs(tbl)
     -- Equivalent of the pairs() function on tables. Allows to iterate in
     -- sorted order. As required by "generic for" loops, this will return the
     -- iterator (function), an "invariant state", and the initial control value.
-    -- (see http://www.lua.org/pil/7.2.html)
+    -- (see http://www.LUA.org/pil/7.2.html)
     return sortedNext, {t = tbl, sortedIdx = __genSortedIndex(tbl)}, nil
 end
 M.private.sortedPairs = sortedPairs
@@ -335,62 +335,62 @@ local function xmlCDataEscape( s )
 end
 M.private.xmlCDataEscape = xmlCDataEscape
 
-local function stripLuaunitTrace( stackTrace )
+local function stripLUAunitTrace( stackTrace )
     --[[
     -- Example of  a traceback:
     <<stack traceback:
-        example_with_luaunit.lua:130: in function 'test2_withFailure'
-        ./luaunit.lua:1449: in function <./luaunit.lua:1449>
+        example_with_LUAunit.LUA:130: in function 'test2_withFailure'
+        ./LUAunit.LUA:1449: in function <./LUAunit.LUA:1449>
         [C]: in function 'xpcall'
-        ./luaunit.lua:1449: in function 'protectedCall'
-        ./luaunit.lua:1508: in function 'execOneFunction'
-        ./luaunit.lua:1596: in function 'runSuiteByInstances'
-        ./luaunit.lua:1660: in function 'runSuiteByNames'
-        ./luaunit.lua:1736: in function 'runSuite'
-        example_with_luaunit.lua:140: in main chunk
+        ./LUAunit.LUA:1449: in function 'protectedCall'
+        ./LUAunit.LUA:1508: in function 'execOneFunction'
+        ./LUAunit.LUA:1596: in function 'runSuiteByInstances'
+        ./LUAunit.LUA:1660: in function 'runSuiteByNames'
+        ./LUAunit.LUA:1736: in function 'runSuite'
+        example_with_LUAunit.LUA:140: in main chunk
         [C]: in ?>>
 
         Other example:
     <<stack traceback:
-        ./luaunit.lua:545: in function 'assertEquals'
-        example_with_luaunit.lua:58: in function 'TestToto.test7'
-        ./luaunit.lua:1517: in function <./luaunit.lua:1517>
+        ./LUAunit.LUA:545: in function 'assertEquals'
+        example_with_LUAunit.LUA:58: in function 'TestToto.test7'
+        ./LUAunit.LUA:1517: in function <./LUAunit.LUA:1517>
         [C]: in function 'xpcall'
-        ./luaunit.lua:1517: in function 'protectedCall'
-        ./luaunit.lua:1578: in function 'execOneFunction'
-        ./luaunit.lua:1677: in function 'runSuiteByInstances'
-        ./luaunit.lua:1730: in function 'runSuiteByNames'
-        ./luaunit.lua:1806: in function 'runSuite'
-        example_with_luaunit.lua:140: in main chunk
+        ./LUAunit.LUA:1517: in function 'protectedCall'
+        ./LUAunit.LUA:1578: in function 'execOneFunction'
+        ./LUAunit.LUA:1677: in function 'runSuiteByInstances'
+        ./LUAunit.LUA:1730: in function 'runSuiteByNames'
+        ./LUAunit.LUA:1806: in function 'runSuite'
+        example_with_LUAunit.LUA:140: in main chunk
         [C]: in ?>>
 
     <<stack traceback:
-        luaunit2/example_with_luaunit.lua:124: in function 'test1_withFailure'
-        luaunit2/luaunit.lua:1532: in function <luaunit2/luaunit.lua:1532>
+        LUAunit2/example_with_LUAunit.LUA:124: in function 'test1_withFailure'
+        LUAunit2/LUAunit.LUA:1532: in function <LUAunit2/LUAunit.LUA:1532>
         [C]: in function 'xpcall'
-        luaunit2/luaunit.lua:1532: in function 'protectedCall'
-        luaunit2/luaunit.lua:1591: in function 'execOneFunction'
-        luaunit2/luaunit.lua:1679: in function 'runSuiteByInstances'
-        luaunit2/luaunit.lua:1743: in function 'runSuiteByNames'
-        luaunit2/luaunit.lua:1819: in function 'runSuite'
-        luaunit2/example_with_luaunit.lua:140: in main chunk
+        LUAunit2/LUAunit.LUA:1532: in function 'protectedCall'
+        LUAunit2/LUAunit.LUA:1591: in function 'execOneFunction'
+        LUAunit2/LUAunit.LUA:1679: in function 'runSuiteByInstances'
+        LUAunit2/LUAunit.LUA:1743: in function 'runSuiteByNames'
+        LUAunit2/LUAunit.LUA:1819: in function 'runSuite'
+        LUAunit2/example_with_LUAunit.LUA:140: in main chunk
         [C]: in ?>>
 
 
     -- first line is "stack traceback": KEEP
-    -- next line may be luaunit line: REMOVE
+    -- next line may be LUAunit line: REMOVE
     -- next lines are call in the program under testOk: REMOVE
-    -- next lines are calls from luaunit to call the program under test: KEEP
+    -- next lines are calls from LUAunit to call the program under test: KEEP
 
     -- Strategy:
     -- keep first line
-    -- remove lines that are part of luaunit
-    -- kepp lines until we hit a luaunit line
+    -- remove lines that are part of LUAunit
+    -- kepp lines until we hit a LUAunit line
     ]]
 
-    local function isLuaunitInternalLine( s )
-        -- return true if line of stack trace comes from inside luaunit
-        return s:find('[/\\]luaunit%.lua:%d+: ') ~= nil
+    local function isLUAunitInternalLine( s )
+        -- return true if line of stack trace comes from inside LUAunit
+        return s:find('[/\\]LUAunit%.LUA:%d+: ') ~= nil
     end
 
     -- print( '<<'..stackTrace..'>>' )
@@ -400,19 +400,19 @@ local function stripLuaunitTrace( stackTrace )
 
     local idx = 2
 
-    -- remove lines that are still part of luaunit
-    while t[idx] and isLuaunitInternalLine( t[idx] ) do
+    -- remove lines that are still part of LUAunit
+    while t[idx] and isLUAunitInternalLine( t[idx] ) do
         -- print('Removing : '..t[idx] )
         table.remove(t, idx)
     end
 
-    -- keep lines until we hit luaunit again
-    while t[idx] and (not isLuaunitInternalLine(t[idx])) do
+    -- keep lines until we hit LUAunit again
+    while t[idx] and (not isLUAunitInternalLine(t[idx])) do
         -- print('Keeping : '..t[idx] )
         idx = idx + 1
     end
 
-    -- remove remaining luaunit lines
+    -- remove remaining LUAunit lines
     while t[idx] do
         -- print('Removing : '..t[idx] )
         table.remove(t, idx)
@@ -422,7 +422,7 @@ local function stripLuaunitTrace( stackTrace )
     return table.concat( t, '\n')
 
 end
-M.private.stripLuaunitTrace = stripLuaunitTrace
+M.private.stripLUAunitTrace = stripLUAunitTrace
 
 
 local function prettystr_sub(v, indentLevel, printTableRefs, recursionTable )
@@ -443,7 +443,7 @@ local function prettystr_sub(v, indentLevel, printTableRefs, recursionTable )
         return M.private._table_tostring(v, indentLevel, printTableRefs, recursionTable)
 
     elseif "number" == type_v then
-        -- eliminate differences in formatting between various Lua versions
+        -- eliminate differences in formatting between various LUA versions
         if v ~= v then
             return "#NaN" -- "not a number"
         end
@@ -453,7 +453,7 @@ local function prettystr_sub(v, indentLevel, printTableRefs, recursionTable )
         if v == -math.huge then
             return "-#Inf"
         end
-        if _VERSION == "Lua 5.3" then
+        if _VERSION == "LUA 5.3" then
             local i = math.tointeger(v)
             if i then
                 return tostring(i)
@@ -519,7 +519,7 @@ function M.adjust_err_msg_with_iter( err_msg, iter_msg )
         -- regular error, not a failure
         if iter_msg then
             local match
-            -- "./test\\test_luaunit.lua:2241: some error msg
+            -- "./test\\test_LUAunit.LUA:2241: some error msg
             match = err_msg:match( '(.*:%d+: ).*' ) 
             if match then
                 err_msg = err_msg:gsub( match, match .. iter_msg )
@@ -1341,7 +1341,7 @@ end
 ------------------------------------------------------------------
 
 function M.assertStrContains( str, sub, isPattern, extra_msg_or_nil )
-    -- this relies on lua string.find function
+    -- this relies on LUA string.find function
     -- a string always contains the empty string
     if not string.find(str, sub, 1, not isPattern) then
         sub, str = prettystrPairs(sub, str, '\n')
@@ -1351,7 +1351,7 @@ function M.assertStrContains( str, sub, isPattern, extra_msg_or_nil )
 end
 
 function M.assertStrIContains( str, sub, extra_msg_or_nil )
-    -- this relies on lua string.find function
+    -- this relies on LUA string.find function
     -- a string always contains the empty string
     if not string.find(str:lower(), sub:lower(), 1, true) then
         sub, str = prettystrPairs(sub, str, '\n')
@@ -1361,7 +1361,7 @@ function M.assertStrIContains( str, sub, extra_msg_or_nil )
 end
 
 function M.assertNotStrContains( str, sub, isPattern, extra_msg_or_nil )
-    -- this relies on lua string.find function
+    -- this relies on LUA string.find function
     -- a string always contains the empty string
     if string.find(str, sub, 1, not isPattern) then
         sub, str = prettystrPairs(sub, str, '\n')
@@ -1371,7 +1371,7 @@ function M.assertNotStrContains( str, sub, isPattern, extra_msg_or_nil )
 end
 
 function M.assertNotStrIContains( str, sub, extra_msg_or_nil )
-    -- this relies on lua string.find function
+    -- this relies on LUA string.find function
     -- a string always contains the empty string
     if string.find(str:lower(), sub:lower(), 1, true) then
         sub, str = prettystrPairs(sub, str, '\n')
@@ -1479,7 +1479,7 @@ end
 
 function M.assertEvalToTrue(value, extra_msg_or_nil)
     if not value then
-        failure("expected: a value evaluating to true, actual: " ..prettystr(value), extra_msg_or_nil, 2)
+        failure("expected: a value evaLUAting to true, actual: " ..prettystr(value), extra_msg_or_nil, 2)
     end
 end
 
@@ -1527,7 +1527,7 @@ end
 
 --[[
 Add type assertion functions to the module table M. Each of these functions
-takes a single parameter "value", and checks that its Lua type matches the
+takes a single parameter "value", and checks that its LUA type matches the
 expected string (derived from the function name):
 
 M.assertIsXxx(value) -> ensure that type(value) conforms to "xxx"
@@ -1537,7 +1537,7 @@ for _, funcName in ipairs(
      'assertIsFunction', 'assertIsUserdata', 'assertIsThread'}
 ) do
     local typeExpected = funcName:match("^assertIs([A-Z]%a*)$")
-    -- Lua type() always returns lowercase, also make sure the match() succeeded
+    -- LUA type() always returns lowercase, also make sure the match() succeeded
     typeExpected = typeExpected and typeExpected:lower()
                    or error("bad function name '"..funcName.."' for type assertion")
 
@@ -1555,7 +1555,7 @@ for _, funcName in ipairs(
 end
 
 --[[
-Add shortcuts for verifying type of a variable, without failure (luaunit v2 compatibility)
+Add shortcuts for verifying type of a variable, without failure (LUAunit v2 compatibility)
 M.isXxx(value) -> returns true if type(value) conforms to "xxx"
 ]]
 for _, typeExpected in ipairs(
@@ -1572,7 +1572,7 @@ end
 
 --[[
 Add non-type assertion functions to the module table M. Each of these functions
-takes a single parameter "value", and checks that its Lua type differs from the
+takes a single parameter "value", and checks that its LUA type differs from the
 expected string (derived from the function name):
 
 M.assertNotIsXxx(value) -> ensure that type(value) is not "xxx"
@@ -1582,7 +1582,7 @@ for _, funcName in ipairs(
      'assertNotIsFunction', 'assertNotIsUserdata', 'assertNotIsThread'}
 ) do
     local typeUnexpected = funcName:match("^assertNotIs([A-Z]%a*)$")
-    -- Lua type() always returns lowercase, also make sure the match() succeeded
+    -- LUA type() always returns lowercase, also make sure the match() succeeded
     typeUnexpected = typeUnexpected and typeUnexpected:lower()
                    or error("bad function name '"..funcName.."' for type assertion")
 
@@ -1713,15 +1713,15 @@ end
 --                     Compatibility layer
 ----------------------------------------------------------------
 
--- for compatibility with LuaUnit v2.x
+-- for compatibility with LUAUnit v2.x
 function M.wrapFunctions()
-    -- In LuaUnit version <= 2.1 , this function was necessary to include
+    -- In LUAUnit version <= 2.1 , this function was necessary to include
     -- a test function inside the global test suite. Nowadays, the functions
     -- are simply run directly as part of the test discovery process.
     -- so just do nothing !
     io.stderr:write[[Use of WrapFunctions() is no longer needed.
 Just prefix your test function names with "test" or "Test" and they
-will be picked up and run by LuaUnit.
+will be picked up and run by LUAUnit.
 ]]
 end
 
@@ -1787,7 +1787,7 @@ local list_of_funcs = {
     { 'assertIsThread'          , 'assertThread' },
     { 'assertIsUserdata'        , 'assertUserdata' },
 
-    -- type assertions: assertIsXXX -> assert_xxx (luaunit v2 compat)
+    -- type assertions: assertIsXXX -> assert_xxx (LUAunit v2 compat)
     { 'assertIsNumber'          , 'assert_number' },
     { 'assertIsString'          , 'assert_string' },
     { 'assertIsTable'           , 'assert_table' },
@@ -1823,7 +1823,7 @@ local list_of_funcs = {
     { 'assertNotIsThread'       , 'assert_not_is_thread' },
     { 'assertNotIsUserdata'     , 'assert_not_is_userdata' },
 
-    -- type assertions: assertNotIsXXX -> assertNotXxx (luaunit v2 compat)
+    -- type assertions: assertNotIsXXX -> assertNotXxx (LUAunit v2 compat)
     { 'assertNotIsNumber'       , 'assertNotNumber' },
     { 'assertNotIsString'       , 'assertNotString' },
     { 'assertNotIsTable'        , 'assertNotTable' },
@@ -1888,14 +1888,14 @@ end
 ----------------------------------------------------------------
 
 -- A common "base" class for outputters
--- For concepts involved (class inheritance) see http://www.lua.org/pil/16.2.html
+-- For concepts involved (class inheritance) see http://www.LUA.org/pil/16.2.html
 
 local genericOutput = { __class__ = 'genericOutput' } -- class
 local genericOutput_MT = { __index = genericOutput } -- metatable
 M.genericOutput = genericOutput -- publish, so that custom classes may derive from it
 
 function genericOutput.new(runner, default_verbosity)
-    -- runner is the "parent" object controlling the output, usually a LuaUnit instance
+    -- runner is the "parent" object controlling the output, usually a LUAUnit instance
     local t = { runner = runner }
     if runner then
         t.result = runner.result
@@ -1958,7 +1958,7 @@ TapOutput.__class__ = 'TapOutput'
     end
 
     function TapOutput:endSuite()
-        print( '# '..M.LuaUnit.statusLine( self.result ) )
+        print( '# '..M.LUAUnit.statusLine( self.result ) )
         return self.result.notPassedCount
     end
 
@@ -2016,17 +2016,17 @@ JUnitOutput.__class__ = 'JUnitOutput'
     end
 
     function JUnitOutput:endSuite()
-        print( '# '..M.LuaUnit.statusLine(self.result))
+        print( '# '..M.LUAUnit.statusLine(self.result))
 
         -- XML file writing
         self.fd:write('<?xml version="1.0" encoding="UTF-8" ?>\n')
         self.fd:write('<testsuites>\n')
         self.fd:write(string.format(
-            '    <testsuite name="LuaUnit" id="00001" package="" hostname="localhost" tests="%d" timestamp="%s" time="%0.3f" errors="%d" failures="%d">\n',
+            '    <testsuite name="LUAUnit" id="00001" package="" hostname="localhost" tests="%d" timestamp="%s" time="%0.3f" errors="%d" failures="%d">\n',
             self.result.runCount, self.result.startIsodate, self.result.duration, self.result.errorCount, self.result.failureCount ))
         self.fd:write("        <properties>\n")
-        self.fd:write(string.format('            <property name="Lua Version" value="%s"/>\n', _VERSION ) )
-        self.fd:write(string.format('            <property name="LuaUnit Version" value="%s"/>\n', M.VERSION) )
+        self.fd:write(string.format('            <property name="LUA Version" value="%s"/>\n', _VERSION ) )
+        self.fd:write(string.format('            <property name="LUAUnit Version" value="%s"/>\n', M.VERSION) )
         -- XXX please include system name and version if possible
         self.fd:write("        </properties>\n")
 
@@ -2136,7 +2136,7 @@ Failed tests:
 Tests run: 2, Failures: 1, Errors: 0, Skipped: 0
 
 
--- LuaUnit
+-- LUAUnit
 ---- non verbose
 * display . or F or E when running tests
 ---- verbose
@@ -2226,7 +2226,7 @@ TextOutput.__class__ = 'TextOutput'
             print()
         end
         self:displayFailedTests()
-        print( M.LuaUnit.statusLine( self.result ) )
+        print( M.LUAUnit.statusLine( self.result ) )
         if self.result.notPassedCount == 0 then
             print('OK')
         end
@@ -2253,35 +2253,35 @@ end
 
 ----------------------------------------------------------------
 --
---                     class LuaUnit
+--                     class LUAUnit
 --
 ----------------------------------------------------------------
 
-M.LuaUnit = {
+M.LUAUnit = {
     outputType = TextOutput,
     verbosity = M.VERBOSITY_DEFAULT,
-    __class__ = 'LuaUnit'
+    __class__ = 'LUAUnit'
 }
-local LuaUnit_MT = { __index = M.LuaUnit }
+local LUAUnit_MT = { __index = M.LUAUnit }
 
 if EXPORT_ASSERT_TO_GLOBALS then
-    LuaUnit = M.LuaUnit
+    LUAUnit = M.LUAUnit
 end
 
-    function M.LuaUnit.new()
-        return setmetatable( {}, LuaUnit_MT )
+    function M.LUAUnit.new()
+        return setmetatable( {}, LUAUnit_MT )
     end
 
     -----------------[[ Utility methods ]]---------------------
 
-    function M.LuaUnit.asFunction(aObject)
+    function M.LUAUnit.asFunction(aObject)
         -- return "aObject" if it is a function, and nil otherwise
         if 'function' == type(aObject) then
             return aObject
         end
     end
 
-    function M.LuaUnit.splitClassMethod(someName)
+    function M.LUAUnit.splitClassMethod(someName)
         --[[
         Return a pair of className, methodName strings for a name in the form
         "class.method". If no class part (or separator) is found, will return
@@ -2297,25 +2297,25 @@ end
         return nil, someName
     end
 
-    function M.LuaUnit.isMethodTestName( s )
+    function M.LUAUnit.isMethodTestName( s )
         -- return true is the name matches the name of a test method
         -- default rule is that is starts with 'Test' or with 'test'
         return string.sub(s, 1, 4):lower() == 'test'
     end
 
-    function M.LuaUnit.isTestName( s )
+    function M.LUAUnit.isTestName( s )
         -- return true is the name matches the name of a test
         -- default rule is that is starts with 'Test' or with 'test'
         return string.sub(s, 1, 4):lower() == 'test'
     end
 
-    function M.LuaUnit.collectTests()
+    function M.LUAUnit.collectTests()
         -- return a list of all test names in the global namespace
-        -- that match LuaUnit.isTestName
+        -- that match LUAUnit.isTestName
 
         local testNames = {}
         for k, _ in pairs(_G) do
-            if type(k) == "string" and M.LuaUnit.isTestName( k ) then
+            if type(k) == "string" and M.LUAUnit.isTestName( k ) then
                 table.insert( testNames , k )
             end
         end
@@ -2323,7 +2323,7 @@ end
         return testNames
     end
 
-    function M.LuaUnit.parseCmdLine( cmdLine )
+    function M.LUAUnit.parseCmdLine( cmdLine )
         -- parse the command line
         -- Supported command line parameters:
         -- --verbose, -v: increase verbosity
@@ -2446,11 +2446,11 @@ end
         end
 
         if result['help'] then
-            M.LuaUnit.help()
+            M.LUAUnit.help()
         end
 
         if result['version'] then
-            M.LuaUnit.version()
+            M.LUAUnit.version()
         end
 
         if state ~= nil then
@@ -2460,13 +2460,13 @@ end
         return result
     end
 
-    function M.LuaUnit.help()
+    function M.LUAUnit.help()
         print(M.USAGE)
         os.exit(0)
     end
 
-    function M.LuaUnit.version()
-        print('LuaUnit v'..M.VERSION..' by Philippe Fremy <phil@freehackers.org>')
+    function M.LUAUnit.version()
+        print('LUAUnit v'..M.VERSION..' by Philippe Fremy <phil@freehackers.org>')
         os.exit(0)
     end
 
@@ -2552,7 +2552,7 @@ end
         return string.format('%d %s%s', number, singular, suffix)
     end
 
-    function M.LuaUnit.statusLine(result)
+    function M.LUAUnit.statusLine(result)
         -- return status line string according to results
         local s = {
             string.format('Ran %d tests in %0.3f seconds',
@@ -2575,7 +2575,7 @@ end
         return table.concat(s, ', ')
     end
 
-    function M.LuaUnit:startSuite(testCount, nonSelectedCount)
+    function M.LUAUnit:startSuite(testCount, nonSelectedCount)
         self.result = {
             testCount = testCount,
             nonSelectedCount = nonSelectedCount,
@@ -2600,12 +2600,12 @@ end
         self.output:startSuite()
     end
 
-    function M.LuaUnit:startClass( className )
+    function M.LUAUnit:startClass( className )
         self.result.currentClassName = className
         self.output:startClass( className )
     end
 
-    function M.LuaUnit:startTest( testName  )
+    function M.LUAUnit:startTest( testName  )
         self.result.currentTestNumber = self.result.currentTestNumber + 1
         self.result.runCount = self.result.runCount + 1
         self.result.currentNode = NodeStatus.new(
@@ -2618,7 +2618,7 @@ end
         self.output:startTest( testName )
     end
 
-    function M.LuaUnit:addStatus( err )
+    function M.LUAUnit:addStatus( err )
         -- "err" is expected to be a table / result from protectedCall()
         if err.status == NodeStatus.PASS then
             return
@@ -2656,7 +2656,7 @@ end
         self.output:addStatus( node )
     end
 
-    function M.LuaUnit:endTest()
+    function M.LUAUnit:endTest()
         local node = self.result.currentNode
         -- print( 'endTest() '..prettystr(node))
         -- print( 'endTest() '..prettystr(node:isNotPassed()))
@@ -2671,7 +2671,7 @@ end
                 -- Runtime error - abort test execution as requested by
                 -- "--error" option. This is done by setting a special
                 -- flag that gets handled in runSuiteByInstances().
-                print("\nERROR during LuaUnit test execution:\n" .. node.msg)
+                print("\nERROR during LUAUnit test execution:\n" .. node.msg)
                 self.result.aborted = true
             end
         elseif node:isFailure() then
@@ -2679,20 +2679,20 @@ end
                 -- Failure - abort test execution as requested by
                 -- "--failure" option. This is done by setting a special
                 -- flag that gets handled in runSuiteByInstances().
-                print("\nFailure during LuaUnit test execution:\n" .. node.msg)
+                print("\nFailure during LUAUnit test execution:\n" .. node.msg)
                 self.result.aborted = true
             end
         end
         self.result.currentNode = nil
     end
 
-    function M.LuaUnit:endClass()
+    function M.LUAUnit:endClass()
         self.output:endClass()
     end
 
-    function M.LuaUnit:endSuite()
+    function M.LUAUnit:endSuite()
         if self.result.suiteStarted == false then
-            error('LuaUnit:endSuite() -- suite was already ended' )
+            error('LUAUnit:endSuite() -- suite was already ended' )
         end
         self.result.duration = os.clock()-self.result.startTime
         self.result.suiteStarted = false
@@ -2707,7 +2707,7 @@ end
         self.output:endSuite()
     end
 
-    function M.LuaUnit:setOutputType(outputType)
+    function M.LUAUnit:setOutputType(outputType)
         -- default to text
         -- tap produces results according to TAP format
         if outputType:upper() == "NIL" then
@@ -2731,7 +2731,7 @@ end
 
     --------------[[ Runner ]]-----------------
 
-    function M.LuaUnit:protectedCall(classInstance, methodInstance, prettyFuncName)
+    function M.LUAUnit:protectedCall(classInstance, methodInstance, prettyFuncName)
         -- if classInstance is nil, this is just a function call
         -- else, it's method of a class being called.
 
@@ -2746,7 +2746,7 @@ end
 
         local ok, err
         if classInstance then
-            -- stupid Lua < 5.2 does not allow xpcall with arguments so let's use a workaround
+            -- stupid LUA < 5.2 does not allow xpcall with arguments so let's use a workaround
             ok, err = xpcall( function () methodInstance(classInstance) end, err_handler )
         else
             ok, err = xpcall( function () methodInstance() end, err_handler )
@@ -2770,14 +2770,14 @@ end
             err.trace = err.trace:gsub("in (%a+) 'methodInstance'", "in %1 '"..prettyFuncName.."'")
         end
         if STRIP_LUAUNIT_FROM_STACKTRACE then
-            err.trace = stripLuaunitTrace(err.trace)
+            err.trace = stripLUAunitTrace(err.trace)
         end
 
         return err -- return the error "object" (table)
     end
 
 
-    function M.LuaUnit:execOneFunction(className, methodName, classInstance, methodInstance)
+    function M.LUAUnit:execOneFunction(className, methodName, classInstance, methodInstance)
         -- When executing a test function, className and classInstance must be nil
         -- When executing a class method, all parameters must be set
 
@@ -2841,20 +2841,20 @@ end
         self:endTest()
     end
 
-    function M.LuaUnit.expandOneClass( result, className, classInstance )
+    function M.LUAUnit.expandOneClass( result, className, classInstance )
         --[[
         Input: a list of { name, instance }, a class name, a class instance
         Ouptut: modify result to add all test method instance in the form:
         { className.methodName, classInstance }
         ]]
         for methodName, methodInstance in sortedPairs(classInstance) do
-            if M.LuaUnit.asFunction(methodInstance) and M.LuaUnit.isMethodTestName( methodName ) then
+            if M.LUAUnit.asFunction(methodInstance) and M.LUAUnit.isMethodTestName( methodName ) then
                 table.insert( result, { className..'.'..methodName, classInstance } )
             end
         end
     end
 
-    function M.LuaUnit.expandClasses( listOfNameAndInst )
+    function M.LUAUnit.expandClasses( listOfNameAndInst )
         --[[
         -- expand all classes (provided as {className, classInstance}) to a list of {className.methodName, classInstance}
         -- functions and methods remain untouched
@@ -2870,13 +2870,13 @@ end
 
         for i,v in ipairs( listOfNameAndInst ) do
             local name, instance = v[1], v[2]
-            if M.LuaUnit.asFunction(instance) then
+            if M.LUAUnit.asFunction(instance) then
                 table.insert( result, { name, instance } )
             else
                 if type(instance) ~= 'table' then
                     error( 'Instance must be a table or a function, not a '..type(instance)..' with value '..prettystr(instance))
                 end
-                local className, methodName = M.LuaUnit.splitClassMethod( name )
+                local className, methodName = M.LUAUnit.splitClassMethod( name )
                 if className then
                     local methodInstance = instance[methodName]
                     if methodInstance == nil then
@@ -2884,7 +2884,7 @@ end
                     end
                     table.insert( result, { name, instance } )
                 else
-                    M.LuaUnit.expandOneClass( result, name, instance )
+                    M.LUAUnit.expandOneClass( result, name, instance )
                 end
             end
         end
@@ -2892,7 +2892,7 @@ end
         return result
     end
 
-    function M.LuaUnit.applyPatternFilter( patternIncFilter, listOfNameAndInst )
+    function M.LUAUnit.applyPatternFilter( patternIncFilter, listOfNameAndInst )
         local included, excluded = {}, {}
         for i, v in ipairs( listOfNameAndInst ) do
             -- local name, instance = v[1], v[2]
@@ -2905,7 +2905,7 @@ end
         return included, excluded
     end
 
-    function M.LuaUnit:runSuiteByInstances( listOfNameAndInst )
+    function M.LUAUnit:runSuiteByInstances( listOfNameAndInst )
         --[[ Run an explicit list of tests. Each item of the list must be one of:
         * { function name, function instance }
         * { class name, class instance }
@@ -2923,12 +2923,12 @@ end
 
         for i,v in ipairs( filteredList ) do
             local name, instance = v[1], v[2]
-            if M.LuaUnit.asFunction(instance) then
+            if M.LUAUnit.asFunction(instance) then
                 self:execOneFunction( nil, name, nil, instance )
             else
                 -- expandClasses() should have already taken care of sanitizing the input
                 assert( type(instance) == 'table' )
-                local className, methodName = M.LuaUnit.splitClassMethod( name )
+                local className, methodName = M.LUAUnit.splitClassMethod( name )
                 assert( className ~= nil )
                 local methodInstance = instance[methodName]
                 assert(methodInstance ~= nil)
@@ -2946,13 +2946,13 @@ end
         self:endSuite()
 
         if self.result.aborted then
-            print("LuaUnit ABORTED (as requested by --error or --failure option)")
+            print("LUAUnit ABORTED (as requested by --error or --failure option)")
             os.exit(-2)
         end
     end
 
-    function M.LuaUnit:runSuiteByNames( listOfName )
-        --[[ Run LuaUnit with a list of generic names, coming either from command-line or from global
+    function M.LUAUnit:runSuiteByNames( listOfName )
+        --[[ Run LUAUnit with a list of generic names, coming either from command-line or from global
             namespace analysis. Convert the list into a list of (name, valid instances (table or function))
             and calls runSuiteByInstances.
         ]]
@@ -2961,7 +2961,7 @@ end
         local listOfNameAndInst = {}
 
         for i,name in ipairs( listOfName ) do
-            local className, methodName = M.LuaUnit.splitClassMethod( name )
+            local className, methodName = M.LUAUnit.splitClassMethod( name )
             if className then
                 instanceName = className
                 instance = _G[instanceName]
@@ -2999,7 +2999,7 @@ end
         self:runSuiteByInstances( listOfNameAndInst )
     end
 
-    function M.LuaUnit.run(...)
+    function M.LUAUnit.run(...)
         -- Run some specific test classes.
         -- If no arguments are passed, run the class names specified on the
         -- command line. If no class name is specified on the command line
@@ -3008,16 +3008,16 @@ end
         -- If arguments are passed, they must be strings of the class names
         -- that you want to run or generic command line arguments (-o, -p, -v, ...)
 
-        local runner = M.LuaUnit.new()
+        local runner = M.LUAUnit.new()
         return runner:runSuite(...)
     end
 
-    function M.LuaUnit:runSuite( ... )
+    function M.LUAUnit:runSuite( ... )
 
         local args = {...}
-        if type(args[1]) == 'table' and args[1].__class__ == 'LuaUnit' then
-            -- run was called with the syntax M.LuaUnit:runSuite()
-            -- we support both M.LuaUnit.run() and M.LuaUnit:run()
+        if type(args[1]) == 'table' and args[1].__class__ == 'LUAUnit' then
+            -- run was called with the syntax M.LUAUnit:runSuite()
+            -- we support both M.LUAUnit.run() and M.LUAUnit:run()
             -- strip out the first argument
             table.remove(args,1)
         end
@@ -3026,7 +3026,7 @@ end
             args = cmdline_argv
         end
 
-        local options = pcall_or_abort( M.LuaUnit.parseCmdLine, args )
+        local options = pcall_or_abort( M.LUAUnit.parseCmdLine, args )
 
         -- We expect these option fields to be either `nil` or contain
         -- valid values, so it's safe to always copy them directly.
@@ -3047,18 +3047,18 @@ end
             pcall_or_abort(self.setOutputType, self, options.output)
         end
 
-        self:runSuiteByNames( options.testNames or M.LuaUnit.collectTests() )
+        self:runSuiteByNames( options.testNames or M.LUAUnit.collectTests() )
 
         return self.result.notPassedCount
     end
--- class LuaUnit
+-- class LUAUnit
 
--- For compatbility with LuaUnit v2
-M.run = M.LuaUnit.run
-M.Run = M.LuaUnit.run
+-- For compatbility with LUAUnit v2
+M.run = M.LUAUnit.run
+M.Run = M.LUAUnit.run
 
 function M:setVerbosity( verbosity )
-    M.LuaUnit.verbosity = verbosity
+    M.LUAUnit.verbosity = verbosity
 end
 M.set_verbosity = M.setVerbosity
 M.SetVerbosity = M.setVerbosity

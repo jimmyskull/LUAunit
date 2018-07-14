@@ -1,14 +1,14 @@
 os: MinGW
 shallow_clone: true
 
-# create a build matrix to use various Lua and LuaJIT versions
+# create a build matrix to use various LUA and LUAJIT versions
 environment:
   matrix:
-    - LUAENV: lua51
-    - LUAENV: lua52
-    - LUAENV: lua53
-    - LUAENV: luajit20
-    - LUAENV: luajit21
+    - LUAENV: LUA51
+    - LUAENV: LUA52
+    - LUAENV: LUA53
+    - LUAENV: LUAjit20
+    - LUAENV: LUAjit21
     - LUAENV: cinst
 
 # cinst occasionally has problems, allow it to fail
@@ -18,20 +18,20 @@ matrix:
 
 # install required binaries via batch file (also sets %LUA% path)
 install:
-- cmd: .appveyor\install-lua.cmd
+- cmd: .appveyor\install-LUA.cmd
 
 cache:
-  - lua51       -> .appveyor\install-lua.cmd
-  - lua52       -> .appveyor\install-lua.cmd
-  - lua53       -> .appveyor\install-lua.cmd
-  - luajit20    -> .appveyor\install-lua.cmd
-  - luajit21    -> .appveyor\install-lua.cmd
-  - 'C:\Program Files (x86)\Lua -> .appveyor\install-lua.cmd'
+  - LUA51       -> .appveyor\install-LUA.cmd
+  - LUA52       -> .appveyor\install-LUA.cmd
+  - LUA53       -> .appveyor\install-LUA.cmd
+  - LUAjit20    -> .appveyor\install-LUA.cmd
+  - LUAjit21    -> .appveyor\install-LUA.cmd
+  - 'C:\Program Files (x86)\LUA -> .appveyor\install-LUA.cmd'
 
 build: off
 
 test_script:
 - cmd: >-
-    %LUA% -v run_unit_tests.lua --shuffle
+    %LUA% -v run_unit_tests.LUA --shuffle
 
-    %LUA% run_functional_tests.lua
+    %LUA% run_functional_tests.LUA

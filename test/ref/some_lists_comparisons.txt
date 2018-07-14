@@ -1,6 +1,6 @@
 Started on 11/08/16 21:28:53
     TestListCompare.test1 ... FAIL
-test/some_lists_comparisons.lua:22: expected: 
+test/some_lists_comparisons.LUA:22: expected: 
 {
     121221,
     122211,
@@ -48,7 +48,7 @@ List difference analysis:
   = A[10], B[10]: 121212
   = A[11], B[11]: 122121
     TestListCompare.test1b ... FAIL
-test/some_lists_comparisons.lua:28: expected: 
+test/some_lists_comparisons.LUA:28: expected: 
 {
     121221,
     122211,
@@ -94,7 +94,7 @@ List difference analysis:
   - A[11]: 122112
   + B[11]: 121212
     TestListCompare.test1c ... FAIL
-test/some_lists_comparisons.lua:34: expected: 
+test/some_lists_comparisons.LUA:34: expected: 
 {
     121212,
     122121,
@@ -141,7 +141,7 @@ List difference analysis:
   = A[10], B[10]: 122212
   = A[11], B[11]: 112121
     TestListCompare.test2 ... FAIL
-test/some_lists_comparisons.lua:43: expected: {1, 2, 3, 4, 5, 6, 8, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:43: expected: {1, 2, 3, 4, 5, 6, 8, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * lists A (actual) and B (expected) have the same size
@@ -173,7 +173,7 @@ List difference analysis:
   = A[19], B[19]: 19
   = A[20], B[20]: 20
     TestListCompare.test3 ... FAIL
-test/some_lists_comparisons.lua:57: expected: {1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:57: expected: {1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * list sizes differ: list A (actual) has 20 items, list B (expected) has 19 items
@@ -203,7 +203,7 @@ List difference analysis:
   = A[19], B[18]: 19
   = A[20], B[19]: 20
     TestListCompare.test4 ... FAIL
-test/some_lists_comparisons.lua:74: expected: {1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:74: expected: {1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * list sizes differ: list A (actual) has 20 items, list B (expected) has 17 items
@@ -233,7 +233,7 @@ List difference analysis:
   = A[19], B[16]: 19
   = A[20], B[17]: 20
     TestListCompare.test5a ... FAIL
-test/some_lists_comparisons.lua:98: expected: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:98: expected: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: {1, 2, 3, 4, 6, 5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * list sizes differ: list A (expected) has 17 items, list B (actual) has 20 items
@@ -266,7 +266,7 @@ List difference analysis:
   = A[16], B[19]: 19
   = A[17], B[20]: 20
     TestListCompare.test5b ... FAIL
-test/some_lists_comparisons.lua:103: expected: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:103: expected: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: {1, 2, 3, 4, 6, 5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * list sizes differ: list A (actual) has 17 items, list B (expected) has 20 items
@@ -299,7 +299,7 @@ List difference analysis:
   = A[16], B[19]: 19
   = A[17], B[20]: 20
     TestListCompare.test5c ... FAIL
-test/some_lists_comparisons.lua:109: expected: <table: 00D04838> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:109: expected: <table: 00D04838> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: <table: 00D04838> {1, 2, 3, 4, 6, 5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * list sizes differ: list <table: 00D04838> A (actual) has 17 items, list <table: 00D04838> B (expected) has 20 items
@@ -332,7 +332,7 @@ List difference analysis:
   = A[16], B[19]: 19
   = A[17], B[20]: 20
     TestListCompare.test6 ... FAIL
-test/some_lists_comparisons.lua:117: expected: 
+test/some_lists_comparisons.LUA:117: expected: 
 {
     "aaa",
     "bbb",
@@ -381,7 +381,7 @@ List difference analysis:
   = A[11], B[11]: thread: 00E35480
   = A[12], B[12]: thread: 00E35480
     TestListCompare.test7 ... FAIL
-test/some_lists_comparisons.lua:123: expected: {{1, 2, 3}, {1, 2}, {{1}, {2}}, {"aa", "cc"}, 1, 2, 1.33, #Inf, {a=1}, {}}
+test/some_lists_comparisons.LUA:123: expected: {{1, 2, 3}, {1, 2}, {{1}, {2}}, {"aa", "cc"}, 1, 2, 1.33, #Inf, {a=1}, {}}
 actual: {{1, 2, 3}, {1, 2}, {{2}, {2}}, {"aa", "bb"}, 1, 2, 1.33, #Inf, {a=1}, {}}
 List difference analysis:
 * lists A (actual) and B (expected) have the same size
@@ -406,7 +406,7 @@ List difference analysis:
 Failed tests:
 -------------
 1) TestListCompare.test1
-test/some_lists_comparisons.lua:22: expected: 
+test/some_lists_comparisons.LUA:22: expected: 
 {
     121221,
     122211,
@@ -454,10 +454,10 @@ List difference analysis:
   = A[10], B[10]: 121212
   = A[11], B[11]: 122121
 stack traceback:
-	test/some_lists_comparisons.lua:22: in function 'TestListCompare.test1'
+	test/some_lists_comparisons.LUA:22: in function 'TestListCompare.test1'
 
 2) TestListCompare.test1b
-test/some_lists_comparisons.lua:28: expected: 
+test/some_lists_comparisons.LUA:28: expected: 
 {
     121221,
     122211,
@@ -503,10 +503,10 @@ List difference analysis:
   - A[11]: 122112
   + B[11]: 121212
 stack traceback:
-	test/some_lists_comparisons.lua:28: in function 'TestListCompare.test1b'
+	test/some_lists_comparisons.LUA:28: in function 'TestListCompare.test1b'
 
 3) TestListCompare.test1c
-test/some_lists_comparisons.lua:34: expected: 
+test/some_lists_comparisons.LUA:34: expected: 
 {
     121212,
     122121,
@@ -553,10 +553,10 @@ List difference analysis:
   = A[10], B[10]: 122212
   = A[11], B[11]: 112121
 stack traceback:
-	test/some_lists_comparisons.lua:34: in function 'TestListCompare.test1c'
+	test/some_lists_comparisons.LUA:34: in function 'TestListCompare.test1c'
 
 4) TestListCompare.test2
-test/some_lists_comparisons.lua:43: expected: {1, 2, 3, 4, 5, 6, 8, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:43: expected: {1, 2, 3, 4, 5, 6, 8, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * lists A (actual) and B (expected) have the same size
@@ -588,10 +588,10 @@ List difference analysis:
   = A[19], B[19]: 19
   = A[20], B[20]: 20
 stack traceback:
-	test/some_lists_comparisons.lua:43: in function 'TestListCompare.test2'
+	test/some_lists_comparisons.LUA:43: in function 'TestListCompare.test2'
 
 5) TestListCompare.test3
-test/some_lists_comparisons.lua:57: expected: {1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:57: expected: {1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * list sizes differ: list A (actual) has 20 items, list B (expected) has 19 items
@@ -621,10 +621,10 @@ List difference analysis:
   = A[19], B[18]: 19
   = A[20], B[19]: 20
 stack traceback:
-	test/some_lists_comparisons.lua:57: in function 'TestListCompare.test3'
+	test/some_lists_comparisons.LUA:57: in function 'TestListCompare.test3'
 
 6) TestListCompare.test4
-test/some_lists_comparisons.lua:74: expected: {1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:74: expected: {1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * list sizes differ: list A (actual) has 20 items, list B (expected) has 17 items
@@ -654,10 +654,10 @@ List difference analysis:
   = A[19], B[16]: 19
   = A[20], B[17]: 20
 stack traceback:
-	test/some_lists_comparisons.lua:74: in function 'TestListCompare.test4'
+	test/some_lists_comparisons.LUA:74: in function 'TestListCompare.test4'
 
 7) TestListCompare.test5a
-test/some_lists_comparisons.lua:98: expected: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:98: expected: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: {1, 2, 3, 4, 6, 5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * list sizes differ: list A (expected) has 17 items, list B (actual) has 20 items
@@ -690,10 +690,10 @@ List difference analysis:
   = A[16], B[19]: 19
   = A[17], B[20]: 20
 stack traceback:
-	test/some_lists_comparisons.lua:98: in function 'TestListCompare.test5a'
+	test/some_lists_comparisons.LUA:98: in function 'TestListCompare.test5a'
 
 8) TestListCompare.test5b
-test/some_lists_comparisons.lua:103: expected: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:103: expected: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: {1, 2, 3, 4, 6, 5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * list sizes differ: list A (actual) has 17 items, list B (expected) has 20 items
@@ -726,10 +726,10 @@ List difference analysis:
   = A[16], B[19]: 19
   = A[17], B[20]: 20
 stack traceback:
-	test/some_lists_comparisons.lua:103: in function 'TestListCompare.test5b'
+	test/some_lists_comparisons.LUA:103: in function 'TestListCompare.test5b'
 
 9) TestListCompare.test5c
-test/some_lists_comparisons.lua:109: expected: <table: 00D04838> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+test/some_lists_comparisons.LUA:109: expected: <table: 00D04838> {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 actual: <table: 00D04838> {1, 2, 3, 4, 6, 5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 List difference analysis:
 * list sizes differ: list <table: 00D04838> A (actual) has 17 items, list <table: 00D04838> B (expected) has 20 items
@@ -762,10 +762,10 @@ List difference analysis:
   = A[16], B[19]: 19
   = A[17], B[20]: 20
 stack traceback:
-	test/some_lists_comparisons.lua:109: in function 'TestListCompare.test5c'
+	test/some_lists_comparisons.LUA:109: in function 'TestListCompare.test5c'
 
 10) TestListCompare.test6
-test/some_lists_comparisons.lua:117: expected: 
+test/some_lists_comparisons.LUA:117: expected: 
 {
     "aaa",
     "bbb",
@@ -814,10 +814,10 @@ List difference analysis:
   = A[11], B[11]: thread: 00E35480
   = A[12], B[12]: thread: 00E35480
 stack traceback:
-	test/some_lists_comparisons.lua:117: in function 'TestListCompare.test6'
+	test/some_lists_comparisons.LUA:117: in function 'TestListCompare.test6'
 
 11) TestListCompare.test7
-test/some_lists_comparisons.lua:123: expected: {{1, 2, 3}, {1, 2}, {{1}, {2}}, {"aa", "cc"}, 1, 2, 1.33, #Inf, {a=1}, {}}
+test/some_lists_comparisons.LUA:123: expected: {{1, 2, 3}, {1, 2}, {{1}, {2}}, {"aa", "cc"}, 1, 2, 1.33, #Inf, {a=1}, {}}
 actual: {{1, 2, 3}, {1, 2}, {{2}, {2}}, {"aa", "bb"}, 1, 2, 1.33, #Inf, {a=1}, {}}
 List difference analysis:
 * lists A (actual) and B (expected) have the same size
@@ -839,6 +839,6 @@ List difference analysis:
   = A[9], B[9]: {a=1}
   = A[10], B[10]: {}
 stack traceback:
-	test/some_lists_comparisons.lua:123: in function 'TestListCompare.test7'
+	test/some_lists_comparisons.LUA:123: in function 'TestListCompare.test7'
 
 Ran 11 tests in 0.005 seconds, 0 successes, 11 failures

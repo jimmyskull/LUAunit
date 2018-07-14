@@ -1,6 +1,6 @@
 TODO Future:
 ============
-- pretty function formatting: https://github.com/luarocks/luarocks/blob/master/src/luarocks/core/util.lua
+- pretty function formatting: https://github.com/LUArocks/LUArocks/blob/master/src/LUArocks/core/util.LUA
 - platform detection:
 - document prettystr
 - add the ability to count the number of assertions that should have been executed in the test
@@ -11,7 +11,7 @@ TODO Future:
 - print local variables upon assertion error:
 	+ debug.get_local( ) will get the local variables in the current context
 	+ debug.get_upvalue( ) will get the upvalues in the current context
-- see inspect for better table printing: https://github.com/kikito/inspect.lua
+- see inspect for better table printing: https://github.com/kikito/inspect.LUA
 	+ print list part separate from the dict part in a table
 	+ print metatables in tables
 - see StackTracePlus for printing more stack information: https://github.com/ignacio/StackTracePlus
@@ -51,9 +51,9 @@ Done since 3.2:
 - useRe -> usePattern
 - add success() to terminate test successfully
 - doc: explain that prettystr() is used in assertions
-- check rock installation of luaunit
+- check rock installation of LUAunit
 - add custom message support
-- build luarocks
+- build LUArocks
 - update contributors
 - update download badge
 - doc about prettystr
@@ -61,7 +61,7 @@ Done since 3.2:
 - use caching on travis-ci
 - assertAlmostEqual no longer includes a default margin, margin must always be explicitly specified.
 - verify that lu.EPS by calculation
-- fix include/exclude bug (see https://github.com/bluebird75/luaunit/pull/82 )
+- fix include/exclude bug (see https://github.com/bluebird75/LUAunit/pull/82 )
 - doc about scientific computing dedicated functions
 - assertions for nan and inf and +/- zero
 - fixes for junit and tap output
@@ -76,25 +76,25 @@ Done since 3.2:
 
 Done since 3.1:
 ===============
-x provide a luarock package. See: https://rocks.moonscript.org/modules/rjpcomputing/luaunit
+x provide a LUArock package. See: https://rocks.moonscript.org/modules/rjpcomputing/LUAunit
 x make a difference between errors and failures
-x lua 5.3 
-x travis lua 5.3
-x compatibility with LuaUnit v2.0 of rjbcomputing
+x LUA 5.3 
+x travis LUA 5.3
+x compatibility with LUAUnit v2.0 of rjbcomputing
 x provide a legacy wrapFunction()
 
 Done since 3.0:
 ===============
 x check documentation link glitch to TAP 
 x doc: report how to handle global space pollution/restriction
-x doc: adapt all examples to new way of requireing luaunit
+x doc: adapt all examples to new way of requireing LUAunit
 x less global space pollution
 x doc: move description of table printing to an annex
 x validate well-formed XML with a DTD
 x validate test output (TAP, ...) with functional tests
 x test failures, verify that output is correct
 x improve testresult: contain the list of tests, with status of each test
-x strip luaunit stack more intelligently: exclude content of luaunit
+x strip LUAunit stack more intelligently: exclude content of LUAunit
 x mention mailing-list in README.md
 x mention version in documentation
 x mention mailing-list
@@ -142,7 +142,7 @@ x add assertContains for strings
 x add assertIsNumber, assertIsXXX
 x table assertions
 x sequence asserts
-x compatibilty tests with several version of lua
+x compatibilty tests with several version of LUA
 x add assertNotEquals
 
 Release TODO:
@@ -153,9 +153,9 @@ Release TODO:
 - doit.py runtests success
 - tag set on the code
 - upload release to GitHub
-- prepare luarocks and upload to luarocks
-- verify smooth installation of luarocks
-- annonce release on lua mailing-list
+- prepare LUArocks and upload to LUArocks
+- verify smooth installation of LUArocks
+- annonce release on LUA mailing-list
 
 
 

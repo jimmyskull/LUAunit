@@ -1,5 +1,5 @@
 
-local lu = require('luaunit')
+local lu = require('LUAunit')
 
 TestFailuresWithXml = {} --class
 
@@ -19,5 +19,5 @@ function TestThatLastsALongTime()
 	end
 end
 
-lu.LuaUnit.verbosity = 2
-os.exit( lu.LuaUnit.run() )
+lu.LUAUnit.verbosity = 2
+os.exit( lu.LUAUnit.run() )

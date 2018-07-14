@@ -1,7 +1,7 @@
-#!/usr/bin/env lua
+#!/usr/bin/env LUA
 
 require('os')
-local lu = require('luaunit')
+local lu = require('LUAunit')
 
 
 local function report( ... )
@@ -16,12 +16,12 @@ local IS_UNIX = ( package.config:sub(1,1) == '/' )
 local LUA='"'..arg[-1]..'"'
 
 
--- Escape a string so it can safely be used as a Lua pattern without triggering
+-- Escape a string so it can safely be used as a LUA pattern without triggering
 -- special semantics. This means prepending any "magic" character ^$()%.[]*+-?
 -- with a percent sign. Note: We DON'T expect embedded NUL chars, and thus
--- won't escape those (%z) for Lua 5.1.
+-- won't escape those (%z) for LUA 5.1.
 local LUA_MAGIC_CHARS = "[%^%$%(%)%%%.%[%]%*%+%-%?]"
-local function escape_lua_pattern(s)
+local function escape_LUA_pattern(s)
     return s:gsub(LUA_MAGIC_CHARS, "%%%1") -- substitute with '%' + matched char
 end
 
@@ -29,7 +29,7 @@ local function string_gsub(s, orig, repl)
     -- replace occurrence of string orig by string repl
     -- just like string.gsub, but with no pattern matching
     -- print( 'gsub_input '..s..' '..orig..' '..repl)
-    return s:gsub( escape_lua_pattern(orig), repl )
+    return s:gsub( escape_LUA_pattern(orig), repl )
 end
 
 function testStringSub()
@@ -48,7 +48,7 @@ local function osExec( ... )
         -- quote: It's reasonable (or even necessary in some cases) to enclose
         -- the entire command string in another pair of quotes. (This is needed
         -- to preserve other quotes, due to how os.execute makes use of cmd.exe)
-        -- see e.g. http://lua-users.org/lists/lua-l/2014-06/msg00551.html
+        -- see e.g. http://LUA-users.org/lists/LUA-l/2014-06/msg00551.html
         cmd = '"' .. cmd .. '"'
     end
 
@@ -56,8 +56,8 @@ local function osExec( ... )
     local exitSuccess, exitReason, exitCode = os.execute( cmd )
     -- print('\n', exitSuccess, exitReason, exitCode)
 
-    if _VERSION == 'Lua 5.1' then
-        -- Lua 5.1 returns only the exit code
+    if _VERSION == 'LUA 5.1' then
+        -- LUA 5.1 returns only the exit code
         exitReason = 'exit'
         if IS_UNIX then
             -- in C:  exitCode = (exitSuccess >> 8) & 0xFF
@@ -73,7 +73,7 @@ local function osExec( ... )
     -- assuming that those are in the range -8 to -1:
     if exitCode >= 248 then exitCode = exitCode - 256 end
 
-    -- Lua 5.2+ has a weird way of dealing with exit code -1, at least on Windows
+    -- LUA 5.2+ has a weird way of dealing with exit code -1, at least on Windows
     if exitReason == 'No error' then
         exitReason = 'exit'
         exitCode = -1
@@ -182,12 +182,12 @@ local function check_tap_output( fileToRun, options, output, refOutput, refExitC
 
     adjustFile( output, refOutput, '# Started on (.*)')
     adjustFile( output, refOutput, '# Ran %d+ tests in (%d+.%d*).*')
-    if _VERSION == 'Lua 5.3' then
-        -- For Lua 5.3: stack trace uses "method" instead of "function"
-        adjustFile( output, refOutput, '.*%.lua:%d+: in (%S*) .*', true )
+    if _VERSION == 'LUA 5.3' then
+        -- For LUA 5.3: stack trace uses "method" instead of "function"
+        adjustFile( output, refOutput, '.*%.LUA:%d+: in (%S*) .*', true )
     end
 
-    if not osExec([[diff -NPw -u -I " *\.[/\\]luaunit.lua:[0123456789]\+:.*" %s %s]], refOutput, output) then
+    if not osExec([[diff -NPw -u -I " *\.[/\\]LUAunit.LUA:[0123456789]\+:.*" %s %s]], refOutput, output) then
         error('TAP Output mismatch for file : '..output)
     end
     -- report('TAP Output ok: '..output)
@@ -208,12 +208,12 @@ local function check_text_output( fileToRun, options, output, refOutput, refExit
     adjustFile( output, refOutput, 'thread: (0?x?[%x]+)', true )
     adjustFile( output, refOutput, 'function: (0?x?[%x]+)', true )
     adjustFile( output, refOutput, '<table: (0?x?[%x]+)>', true )
-    if _VERSION == 'Lua 5.3' then
-        -- For Lua 5.3: stack trace uses "method" instead of "function"
-        adjustFile( output, refOutput, '.*%.lua:%d+: in (%S*) .*', true )
+    if _VERSION == 'LUA 5.3' then
+        -- For LUA 5.3: stack trace uses "method" instead of "function"
+        adjustFile( output, refOutput, '.*%.LUA:%d+: in (%S*) .*', true )
     end
 
-    if not osExec([[diff -NPw -u -I " *\.[/\\]luaunit.lua:[0123456789]\+:.*" %s %s]], refOutput, output) then
+    if not osExec([[diff -NPw -u -I " *\.[/\\]LUAunit.LUA:[0123456789]\+:.*" %s %s]], refOutput, output) then
         error('Text Output mismatch for file : '..output)
     end
     -- report('Text Output ok: '..output)
@@ -225,7 +225,7 @@ local function check_nil_output( fileToRun, options, output, refOutput, refExitC
     osExpectedCodeExec(refExitCode, '%s %s --output nil %s > %s',
                        LUA, fileToRun, options, output)
 
-    if not osExec([[diff -NPw -u -I " *\.[/\\]luaunit.lua:[0123456789]\+:.*" %s %s]], refOutput, output) then
+    if not osExec([[diff -NPw -u -I " *\.[/\\]LUAunit.LUA:[0123456789]\+:.*" %s %s]], refOutput, output) then
         error('NIL Output mismatch for file : '..output)
     end
     -- report('NIL Output ok: '..output)
@@ -244,13 +244,13 @@ local function check_xml_output( fileToRun, options, output, xmlOutput, xmlLintO
     adjustFile( output, refOutput, '# Ran %d+ tests in (%d+.%d*).*')
     adjustFile( xmlOutput, refXmlOutput, '.*<testsuite.*(timestamp=".-" time=".-").*')
     adjustFile( xmlOutput, refXmlOutput, '.*<testcase .*(time=".-").*' )
-    -- For Lua 5.1 / 5.2 compatibility
-    adjustFile( xmlOutput, refXmlOutput, '.*<property name="Lua Version" value="(Lua 5%..)"/>')
+    -- For LUA 5.1 / 5.2 compatibility
+    adjustFile( xmlOutput, refXmlOutput, '.*<property name="LUA Version" value="(LUA 5%..)"/>')
 
-    if _VERSION == 'Lua 5.3' then
-        -- For Lua 5.3: stack trace uses "method" instead of "function"
-        adjustFile( output, refOutput, '.*%.lua:%d+: in (%S*) .*', true )
-        adjustFile( xmlOutput, refXmlOutput, '.*%.lua:%d+: in (%S*) .*', true )
+    if _VERSION == 'LUA 5.3' then
+        -- For LUA 5.3: stack trace uses "method" instead of "function"
+        adjustFile( output, refOutput, '.*%.LUA:%d+: in (%S*) .*', true )
+        adjustFile( xmlOutput, refXmlOutput, '.*%.LUA:%d+: in (%S*) .*', true )
     end
 
     if HAS_XMLLINT then
@@ -279,13 +279,13 @@ local function check_xml_output( fileToRun, options, output, xmlOutput, xmlLintO
         end
     end
 
-    -- ignore change in line numbers for luaunit
-    if not osExec([[diff -NPw -u -I " *\.[/\\]luaunit.lua:[0123456789]\+:.*" %s %s]], refXmlOutput, xmlOutput) then
+    -- ignore change in line numbers for LUAunit
+    if not osExec([[diff -NPw -u -I " *\.[/\\]LUAunit.LUA:[0123456789]\+:.*" %s %s]], refXmlOutput, xmlOutput) then
         error('XML content mismatch for file : '..xmlOutput)
         retcode = retcode + 1
     end
 
-    if not osExec([[diff -NPw -u -I " *\.[/\\]luaunit.lua:[0123456789]\+:.*" %s %s]], refOutput, output) then
+    if not osExec([[diff -NPw -u -I " *\.[/\\]LUAunit.LUA:[0123456789]\+:.*" %s %s]], refOutput, output) then
         error('XML Output mismatch for file : '..output)
         retcode = retcode + 1
     end
@@ -303,55 +303,55 @@ end
 
 function testTapDefault()
     lu.assertEquals( 0,
-        check_tap_output('example_with_luaunit.lua', '',
+        check_tap_output('example_with_LUAunit.LUA', '',
             'test/exampleTapDefault.txt', 
             'test/ref/exampleTapDefault.txt', 12) )
     lu.assertEquals( 0,
-        check_tap_output('test/test_with_err_fail_pass.lua', '',
+        check_tap_output('test/test_with_err_fail_pass.LUA', '',
             'test/errFailPassTapDefault.txt', 
             'test/ref/errFailPassTapDefault.txt', 10 ) )
     lu.assertEquals( 0,
-        check_tap_output('test/test_with_err_fail_pass.lua', '-p Succ',
+        check_tap_output('test/test_with_err_fail_pass.LUA', '-p Succ',
             'test/errFailPassTapDefault-success.txt', 
             'test/ref/errFailPassTapDefault-success.txt', 0 ) )
     lu.assertEquals( 0,
-        check_tap_output('test/test_with_err_fail_pass.lua', '-p Succ -p Fail',
+        check_tap_output('test/test_with_err_fail_pass.LUA', '-p Succ -p Fail',
             'test/errFailPassTapDefault-failures.txt', 
             'test/ref/errFailPassTapDefault-failures.txt', 5 ) )
 end
 
 function testTapVerbose()
     lu.assertEquals( 0,
-        check_tap_output('example_with_luaunit.lua', '--verbose', 
+        check_tap_output('example_with_LUAunit.LUA', '--verbose', 
             'test/exampleTapVerbose.txt', 
             'test/ref/exampleTapVerbose.txt', 12 ) )
     lu.assertEquals( 0,
-        check_tap_output('test/test_with_err_fail_pass.lua', '--verbose',
+        check_tap_output('test/test_with_err_fail_pass.LUA', '--verbose',
             'test/errFailPassTapVerbose.txt', 
             'test/ref/errFailPassTapVerbose.txt', 10 ) )
     lu.assertEquals( 0,
-        check_tap_output('test/test_with_err_fail_pass.lua', '--verbose -p Succ',
+        check_tap_output('test/test_with_err_fail_pass.LUA', '--verbose -p Succ',
             'test/errFailPassTapVerbose-success.txt', 
             'test/ref/errFailPassTapVerbose-success.txt', 0 ) )
     lu.assertEquals( 0,
-        check_tap_output('test/test_with_err_fail_pass.lua', '--verbose -p Succ -p Fail',
+        check_tap_output('test/test_with_err_fail_pass.LUA', '--verbose -p Succ -p Fail',
             'test/errFailPassTapVerbose-failures.txt', 
             'test/ref/errFailPassTapVerbose-failures.txt', 5 ) )
 end
 
 function testTapQuiet()
     lu.assertEquals( 0,
-        check_tap_output('example_with_luaunit.lua', '--quiet',   'test/exampleTapQuiet.txt',   'test/ref/exampleTapQuiet.txt', 12 ) )
+        check_tap_output('example_with_LUAunit.LUA', '--quiet',   'test/exampleTapQuiet.txt',   'test/ref/exampleTapQuiet.txt', 12 ) )
     lu.assertEquals( 0,
-        check_tap_output('test/test_with_err_fail_pass.lua', '--quiet',
+        check_tap_output('test/test_with_err_fail_pass.LUA', '--quiet',
             'test/errFailPassTapQuiet.txt', 
             'test/ref/errFailPassTapQuiet.txt', 10 ) )
     lu.assertEquals( 0,
-        check_tap_output('test/test_with_err_fail_pass.lua', '--quiet -p Succ',
+        check_tap_output('test/test_with_err_fail_pass.LUA', '--quiet -p Succ',
             'test/errFailPassTapQuiet-success.txt', 
             'test/ref/errFailPassTapQuiet-success.txt', 0 ) )
     lu.assertEquals( 0,
-        check_tap_output('test/test_with_err_fail_pass.lua', '--quiet -p Succ -p Fail',
+        check_tap_output('test/test_with_err_fail_pass.LUA', '--quiet -p Succ -p Fail',
             'test/errFailPassTapQuiet-failures.txt', 
             'test/ref/errFailPassTapQuiet-failures.txt', 5 ) )
 end
@@ -360,55 +360,55 @@ end
 
 function testTextDefault()
     lu.assertEquals( 0,
-        check_text_output('example_with_luaunit.lua', '',
+        check_text_output('example_with_LUAunit.LUA', '',
             'test/exampleTextDefault.txt', 
             'test/ref/exampleTextDefault.txt', 12 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '',
+        check_text_output('test/test_with_err_fail_pass.LUA', '',
             'test/errFailPassTextDefault.txt', 
             'test/ref/errFailPassTextDefault.txt', 10 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '-p Succ',
+        check_text_output('test/test_with_err_fail_pass.LUA', '-p Succ',
             'test/errFailPassTextDefault-success.txt', 
             'test/ref/errFailPassTextDefault-success.txt', 0 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '-p Succ -p Fail',
+        check_text_output('test/test_with_err_fail_pass.LUA', '-p Succ -p Fail',
             'test/errFailPassTextDefault-failures.txt', 
             'test/ref/errFailPassTextDefault-failures.txt', 5 ) )
 end
 
 function testTextVerbose()
     lu.assertEquals( 0,
-        check_text_output('example_with_luaunit.lua', '--verbose', 'test/exampleTextVerbose.txt', 'test/ref/exampleTextVerbose.txt', 12 ) )
+        check_text_output('example_with_LUAunit.LUA', '--verbose', 'test/exampleTextVerbose.txt', 'test/ref/exampleTextVerbose.txt', 12 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '--verbose',
+        check_text_output('test/test_with_err_fail_pass.LUA', '--verbose',
             'test/errFailPassTextVerbose.txt', 
             'test/ref/errFailPassTextVerbose.txt', 10 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '--verbose -p Succ',
+        check_text_output('test/test_with_err_fail_pass.LUA', '--verbose -p Succ',
             'test/errFailPassTextVerbose-success.txt', 
             'test/ref/errFailPassTextVerbose-success.txt', 0 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '--verbose -p Succ -p Fail',
+        check_text_output('test/test_with_err_fail_pass.LUA', '--verbose -p Succ -p Fail',
             'test/errFailPassTextVerbose-failures.txt', 
             'test/ref/errFailPassTextVerbose-failures.txt', 5 ) )
 end
 
 function testTextQuiet()
     lu.assertEquals( 0,
-        check_text_output('example_with_luaunit.lua', '--quiet',   
+        check_text_output('example_with_LUAunit.LUA', '--quiet',   
             'test/exampleTextQuiet.txt',   
             'test/ref/exampleTextQuiet.txt', 12 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '--quiet',
+        check_text_output('test/test_with_err_fail_pass.LUA', '--quiet',
             'test/errFailPassTextQuiet.txt', 
             'test/ref/errFailPassTextQuiet.txt', 10 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '--quiet -p Succ',
+        check_text_output('test/test_with_err_fail_pass.LUA', '--quiet -p Succ',
             'test/errFailPassTextQuiet-success.txt', 
             'test/ref/errFailPassTextQuiet-success.txt', 0 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '--quiet -p Succ -p Fail',
+        check_text_output('test/test_with_err_fail_pass.LUA', '--quiet -p Succ -p Fail',
             'test/errFailPassTextQuiet-failures.txt', 
             'test/ref/errFailPassTextQuiet-failures.txt', 5 ) )
 end
@@ -417,17 +417,17 @@ end
 
 function testNilDefault()
     lu.assertEquals( 0,
-        check_nil_output('example_with_luaunit.lua', '', 'test/exampleNilDefault.txt', 'test/ref/exampleNilDefault.txt', 12 ) )
+        check_nil_output('example_with_LUAunit.LUA', '', 'test/exampleNilDefault.txt', 'test/ref/exampleNilDefault.txt', 12 ) )
     lu.assertEquals( 0,
-        check_nil_output('test/test_with_err_fail_pass.lua', '',
+        check_nil_output('test/test_with_err_fail_pass.LUA', '',
             'test/errFailPassNilDefault.txt', 
             'test/ref/errFailPassNilDefault.txt', 10 ) )
     lu.assertEquals( 0,
-        check_nil_output('test/test_with_err_fail_pass.lua', ' -p Succ',
+        check_nil_output('test/test_with_err_fail_pass.LUA', ' -p Succ',
             'test/errFailPassNilDefault-success.txt', 
             'test/ref/errFailPassNilDefault-success.txt', 0 ) )
     lu.assertEquals( 0,
-        check_nil_output('test/test_with_err_fail_pass.lua', ' -p Succ -p Fail',
+        check_nil_output('test/test_with_err_fail_pass.LUA', ' -p Succ -p Fail',
             'test/errFailPassNilDefault-failures.txt', 
             'test/ref/errFailPassNilDefault-failures.txt', 5 ) )
 end
@@ -436,228 +436,228 @@ end
 
 function testXmlDefault()
     lu.assertEquals( 0,
-        check_xml_output('example_with_luaunit.lua', '',
+        check_xml_output('example_with_LUAunit.LUA', '',
             'test/exampleXmlDefault.txt', 'test/exampleXmlDefault.xml', 'test/exampleXmllintDefault.xml', 
             'test/ref/exampleXmlDefault.txt', 'test/ref/exampleXmlDefault.xml', 12 ) )
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_err_fail_pass.lua', '',
+        check_xml_output('test/test_with_err_fail_pass.LUA', '',
             'test/errFailPassXmlDefault.txt', 'test/errFailPassXmlDefault.xml', 'test/errFailPassXmllintDefault.xml',
             'test/ref/errFailPassXmlDefault.txt', 'test/ref/errFailPassXmlDefault.xml', 10 ) )
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_err_fail_pass.lua', '-p Succ',
+        check_xml_output('test/test_with_err_fail_pass.LUA', '-p Succ',
             'test/errFailPassXmlDefault-success.txt', 'test/errFailPassXmlDefault-success.xml', 'test/errFailPassXmllintDefault.xml',
             'test/ref/errFailPassXmlDefault-success.txt', 'test/ref/errFailPassXmlDefault-success.xml', 0 ) )
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_err_fail_pass.lua', '-p Succ -p Fail',
+        check_xml_output('test/test_with_err_fail_pass.LUA', '-p Succ -p Fail',
             'test/errFailPassXmlDefault-failures.txt', 'test/errFailPassXmlDefault-failures.xml', 'test/errFailPassXmllintDefault.xml',
             'test/ref/errFailPassXmlDefault-failures.txt', 'test/ref/errFailPassXmlDefault-failures.xml', 5 ) )
 end
 
 function testXmlVerbose()
     lu.assertEquals( 0,
-        check_xml_output('example_with_luaunit.lua', '--verbose', 
+        check_xml_output('example_with_LUAunit.LUA', '--verbose', 
             'test/exampleXmlVerbose.txt', 'test/exampleXmlVerbose.xml', 'test/exampleXmllintVerbose.xml', 
             'test/ref/exampleXmlVerbose.txt', 'test/ref/exampleXmlVerbose.xml', 12 ) )
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_err_fail_pass.lua', '--verbose ',
+        check_xml_output('test/test_with_err_fail_pass.LUA', '--verbose ',
             'test/errFailPassXmlVerbose.txt', 'test/errFailPassXmlVerbose.xml', 'test/errFailPassXmllintVerbose.xml',
             'test/ref/errFailPassXmlVerbose.txt', 'test/ref/errFailPassXmlVerbose.xml', 10 ) )
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_err_fail_pass.lua', '--verbose -p Succ',
+        check_xml_output('test/test_with_err_fail_pass.LUA', '--verbose -p Succ',
             'test/errFailPassXmlVerbose-success.txt', 'test/errFailPassXmlVerbose-success.xml', 'test/errFailPassXmllintVerbose.xml',
             'test/ref/errFailPassXmlVerbose-success.txt', 'test/ref/errFailPassXmlVerbose-success.xml', 0 ) )
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_err_fail_pass.lua', '--verbose -p Succ -p Fail',
+        check_xml_output('test/test_with_err_fail_pass.LUA', '--verbose -p Succ -p Fail',
             'test/errFailPassXmlVerbose-failures.txt', 'test/errFailPassXmlVerbose-failures.xml', 'test/errFailPassXmllintVerbose.xml',
             'test/ref/errFailPassXmlVerbose-failures.txt', 'test/ref/errFailPassXmlVerbose-failures.xml', 5 ) )
 end
 
 function testXmlQuiet()
     lu.assertEquals( 0,
-        check_xml_output('example_with_luaunit.lua', '--quiet',   'test/exampleXmlQuiet.txt', 'test/exampleXmlQuiet.xml',
+        check_xml_output('example_with_LUAunit.LUA', '--quiet',   'test/exampleXmlQuiet.txt', 'test/exampleXmlQuiet.xml',
         'test/exampleXmllintQuiet.xml', 'test/ref/exampleXmlQuiet.txt', 'test/ref/exampleXmlQuiet.xml', 12 ) )
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_err_fail_pass.lua', '--quiet ',
+        check_xml_output('test/test_with_err_fail_pass.LUA', '--quiet ',
             'test/errFailPassXmlQuiet.txt', 'test/errFailPassXmlQuiet.xml', 'test/errFailPassXmllintQuiet.xml',
             'test/ref/errFailPassXmlQuiet.txt', 'test/ref/errFailPassXmlQuiet.xml', 10 ) )
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_err_fail_pass.lua', '--quiet -p Succ',
+        check_xml_output('test/test_with_err_fail_pass.LUA', '--quiet -p Succ',
             'test/errFailPassXmlQuiet-success.txt', 'test/errFailPassXmlQuiet-success.xml', 'test/errFailPassXmllintQuiet.xml',
             'test/ref/errFailPassXmlQuiet-success.txt', 'test/ref/errFailPassXmlQuiet-success.xml', 0 ) )
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_err_fail_pass.lua', '--quiet -p Succ -p Fail',
+        check_xml_output('test/test_with_err_fail_pass.LUA', '--quiet -p Succ -p Fail',
             'test/errFailPassXmlQuiet-failures.txt', 'test/errFailPassXmlQuiet-failures.xml', 'test/errFailPassXmllintQuiet.xml',
             'test/ref/errFailPassXmlQuiet-failures.txt', 'test/ref/errFailPassXmlQuiet-failures.xml', 5 ) )
 end
 
 function testTestWithXmlDefault()
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_xml.lua', '', 'test/testWithXmlDefault.txt', 'test/testWithXmlDefault.xml',
+        check_xml_output('test/test_with_xml.LUA', '', 'test/testWithXmlDefault.txt', 'test/testWithXmlDefault.xml',
         'test/testWithXmlLintDefault.txt', 'test/ref/testWithXmlDefault.txt', 'test/ref/testWithXmlDefault.xml', 2 ) )
 end
 
 function testTestWithXmlVerbose()
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_xml.lua', '--verbose', 'test/testWithXmlVerbose.txt', 'test/testWithXmlVerbose.xml',
+        check_xml_output('test/test_with_xml.LUA', '--verbose', 'test/testWithXmlVerbose.txt', 'test/testWithXmlVerbose.xml',
         'test/testWithXmlLintVerbose.txt', 'test/ref/testWithXmlVerbose.txt', 'test/ref/testWithXmlVerbose.xml', 2 ) )
 end
 
 function testTestWithXmlQuiet()
     lu.assertEquals( 0,
-        check_xml_output('test/test_with_xml.lua', '--quiet', 'test/testWithXmlQuiet.txt', 'test/testWithXmlQuiet.xml',
+        check_xml_output('test/test_with_xml.LUA', '--quiet', 'test/testWithXmlQuiet.txt', 'test/testWithXmlQuiet.xml',
         'test/testWithXmlLintQuiet.txt', 'test/ref/testWithXmlQuiet.txt', 'test/ref/testWithXmlQuiet.xml', 2 ) )
 end
 
 function testListComparison()
     -- run test/some_lists_comparisons and check exit status 
     lu.assertEquals( 0,
-        check_text_output('test/some_lists_comparisons.lua', '--verbose',
+        check_text_output('test/some_lists_comparisons.LUA', '--verbose',
             'test/some_lists_comparisons.txt', 
             'test/ref/some_lists_comparisons.txt', 11 ) )
 end
 
-function testLegacyLuaunitUsage()
+function testLegacyLUAunitUsage()
     -- run test/legacy_example_usage and check exit status (expecting 12 failures)
     osExpectedCodeExec(12, '%s %s  --output text > %s', LUA,
-        "test/legacy_example_with_luaunit.lua", "test/legacyExample.txt")
+        "test/legacy_example_with_LUAunit.LUA", "test/legacyExample.txt")
 end
 
-function testLuaunitV2Usage()
+function testLUAunitV2Usage()
     osExpectedCodeExec(0, '%s %s  --output text 1> %s 2>&1', LUA,
-        "test/compat_luaunit_v2x.lua", "test/compat_luaunit_v2x.txt")
+        "test/compat_LUAunit_v2x.LUA", "test/compat_LUAunit_v2x.txt")
 end
 
-function testBasicLuaunitOptions()
-    osExpectedCodeExec(0, '%s example_with_luaunit.lua --help > test/null.txt', LUA)
-    osExpectedCodeExec(0, '%s example_with_luaunit.lua --version > test/null.txt', LUA)
+function testBasicLUAunitOptions()
+    osExpectedCodeExec(0, '%s example_with_LUAunit.LUA --help > test/null.txt', LUA)
+    osExpectedCodeExec(0, '%s example_with_LUAunit.LUA --version > test/null.txt', LUA)
     -- test invalid syntax
-    osExpectedCodeExec(-1, '%s example_with_luaunit.lua --foobar > test/null.txt', LUA) -- invalid option
-    osExpectedCodeExec(-1, '%s example_with_luaunit.lua --output foobar > test/null.txt', LUA) -- invalid format
-    osExpectedCodeExec(-1, '%s example_with_luaunit.lua --output junit > test/null.txt', LUA) -- missing output name
+    osExpectedCodeExec(-1, '%s example_with_LUAunit.LUA --foobar > test/null.txt', LUA) -- invalid option
+    osExpectedCodeExec(-1, '%s example_with_LUAunit.LUA --output foobar > test/null.txt', LUA) -- invalid format
+    osExpectedCodeExec(-1, '%s example_with_LUAunit.LUA --output junit > test/null.txt', LUA) -- missing output name
     os.remove('test/null.txt')
 end
 
 function testStopOnError()
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '--quiet -p Succ --error --failure',
+        check_text_output('test/test_with_err_fail_pass.LUA', '--quiet -p Succ --error --failure',
             'test/errFailPassTextStopOnError-1.txt', 
             'test/ref/errFailPassTextStopOnError-1.txt', 0 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '--quiet -p TestSome --error',
+        check_text_output('test/test_with_err_fail_pass.LUA', '--quiet -p TestSome --error',
             'test/errFailPassTextStopOnError-2.txt', 
             'test/ref/errFailPassTextStopOnError-2.txt', -2 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '--quiet -p TestAnoth --failure',
+        check_text_output('test/test_with_err_fail_pass.LUA', '--quiet -p TestAnoth --failure',
             'test/errFailPassTextStopOnError-3.txt', 
             'test/ref/errFailPassTextStopOnError-3.txt', -2 ) )
     lu.assertEquals( 0,
-        check_text_output('test/test_with_err_fail_pass.lua', '--quiet -p TestSome --failure',
+        check_text_output('test/test_with_err_fail_pass.LUA', '--quiet -p TestSome --failure',
             'test/errFailPassTextStopOnError-4.txt', 
             'test/ref/errFailPassTextStopOnError-4.txt', -2 ) )
 end
 
 local filesToGenerateExampleXml = {
-    { 'example_with_luaunit.lua', '', '--output junit --name test/ref/exampleXmlDefault.xml', 'test/ref/exampleXmlDefault.txt' },
-    { 'example_with_luaunit.lua', '--quiet', '--output junit --name test/ref/exampleXmlQuiet.xml', 'test/ref/exampleXmlQuiet.txt' },
-    { 'example_with_luaunit.lua', '--verbose', '--output junit --name test/ref/exampleXmlVerbose.xml', 'test/ref/exampleXmlVerbose.txt' },
+    { 'example_with_LUAunit.LUA', '', '--output junit --name test/ref/exampleXmlDefault.xml', 'test/ref/exampleXmlDefault.txt' },
+    { 'example_with_LUAunit.LUA', '--quiet', '--output junit --name test/ref/exampleXmlQuiet.xml', 'test/ref/exampleXmlQuiet.txt' },
+    { 'example_with_LUAunit.LUA', '--verbose', '--output junit --name test/ref/exampleXmlVerbose.xml', 'test/ref/exampleXmlVerbose.txt' },
 }
 
 local filesToGenerateExampleTap = {
-    { 'example_with_luaunit.lua', '', '--output tap', 'test/ref/exampleTapDefault.txt' },
-    { 'example_with_luaunit.lua', '--quiet', '--output tap', 'test/ref/exampleTapQuiet.txt' },
-    { 'example_with_luaunit.lua', '--verbose', '--output tap', 'test/ref/exampleTapVerbose.txt' },
+    { 'example_with_LUAunit.LUA', '', '--output tap', 'test/ref/exampleTapDefault.txt' },
+    { 'example_with_LUAunit.LUA', '--quiet', '--output tap', 'test/ref/exampleTapQuiet.txt' },
+    { 'example_with_LUAunit.LUA', '--verbose', '--output tap', 'test/ref/exampleTapVerbose.txt' },
 }
 
 local filesToGenerateExampleText = {
-    { 'example_with_luaunit.lua', '', '--output text', 'test/ref/exampleTextDefault.txt' },
-    { 'example_with_luaunit.lua', '--quiet', '--output text', 'test/ref/exampleTextQuiet.txt' },
-    { 'example_with_luaunit.lua', '--verbose', '--output text', 'test/ref/exampleTextVerbose.txt' },
+    { 'example_with_LUAunit.LUA', '', '--output text', 'test/ref/exampleTextDefault.txt' },
+    { 'example_with_LUAunit.LUA', '--quiet', '--output text', 'test/ref/exampleTextQuiet.txt' },
+    { 'example_with_LUAunit.LUA', '--verbose', '--output text', 'test/ref/exampleTextVerbose.txt' },
 }
 
 local filesToGenerateExampleNil = {
-    { 'example_with_luaunit.lua', '', '--output nil', 'test/ref/exampleNilDefault.txt' },
+    { 'example_with_LUAunit.LUA', '', '--output nil', 'test/ref/exampleNilDefault.txt' },
 }
 
 local filesToGenerateErrFailPassXml = {
-    { 'test/test_with_err_fail_pass.lua', '', 
+    { 'test/test_with_err_fail_pass.LUA', '', 
         '--output junit --name test/ref/errFailPassXmlDefault.xml', 
         'test/ref/errFailPassXmlDefault.txt' },
-    { 'test/test_with_err_fail_pass.lua', '', 
+    { 'test/test_with_err_fail_pass.LUA', '', 
         '-p Succ --output junit --name test/ref/errFailPassXmlDefault-success.xml', 
         'test/ref/errFailPassXmlDefault-success.txt' },
-    { 'test/test_with_err_fail_pass.lua', '', 
+    { 'test/test_with_err_fail_pass.LUA', '', 
         '-p Succ -p Fail --output junit --name test/ref/errFailPassXmlDefault-failures.xml', 
         'test/ref/errFailPassXmlDefault-failures.txt' },
-    { 'test/test_with_err_fail_pass.lua', '', '--quiet --output junit --name test/ref/errFailPassXmlQuiet.xml',
+    { 'test/test_with_err_fail_pass.LUA', '', '--quiet --output junit --name test/ref/errFailPassXmlQuiet.xml',
         'test/ref/errFailPassXmlQuiet.txt' },
-    { 'test/test_with_err_fail_pass.lua', '', 
+    { 'test/test_with_err_fail_pass.LUA', '', 
         '-p Succ --quiet --output junit --name test/ref/errFailPassXmlQuiet-success.xml', 
         'test/ref/errFailPassXmlQuiet-success.txt' },
-    { 'test/test_with_err_fail_pass.lua', '', 
+    { 'test/test_with_err_fail_pass.LUA', '', 
         '-p Succ -p Fail --quiet --output junit --name test/ref/errFailPassXmlQuiet-failures.xml', 
         'test/ref/errFailPassXmlQuiet-failures.txt' },
-    { 'test/test_with_err_fail_pass.lua', '', '--verbose --output junit --name test/ref/errFailPassXmlVerbose.xml', 'test/ref/errFailPassXmlVerbose.txt' },
-    { 'test/test_with_err_fail_pass.lua', '', 
+    { 'test/test_with_err_fail_pass.LUA', '', '--verbose --output junit --name test/ref/errFailPassXmlVerbose.xml', 'test/ref/errFailPassXmlVerbose.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '', 
         '-p Succ --verbose --output junit --name test/ref/errFailPassXmlVerbose-success.xml', 
         'test/ref/errFailPassXmlVerbose-success.txt' },
-    { 'test/test_with_err_fail_pass.lua', '', 
+    { 'test/test_with_err_fail_pass.LUA', '', 
         '-p Succ -p Fail --verbose --output junit --name test/ref/errFailPassXmlVerbose-failures.xml', 
         'test/ref/errFailPassXmlVerbose-failures.txt' },
 }
 
 local filesToGenerateErrFailPassTap = {
-    { 'test/test_with_err_fail_pass.lua', '', '--output tap', 'test/ref/errFailPassTapDefault.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ', '--output tap', 'test/ref/errFailPassTapDefault-success.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ -p Fail', '--output tap', 'test/ref/errFailPassTapDefault-failures.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '', '--output tap', 'test/ref/errFailPassTapDefault.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ', '--output tap', 'test/ref/errFailPassTapDefault-success.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ -p Fail', '--output tap', 'test/ref/errFailPassTapDefault-failures.txt' },
 
-    { 'test/test_with_err_fail_pass.lua', '--quiet', '--output tap', 'test/ref/errFailPassTapQuiet.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ --quiet', 
+    { 'test/test_with_err_fail_pass.LUA', '--quiet', '--output tap', 'test/ref/errFailPassTapQuiet.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ --quiet', 
         '--output tap', 'test/ref/errFailPassTapQuiet-success.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ -p Fail --quiet', 
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ -p Fail --quiet', 
         '--output tap', 'test/ref/errFailPassTapQuiet-failures.txt' },
 
-    { 'test/test_with_err_fail_pass.lua', '--verbose', '--output tap', 'test/ref/errFailPassTapVerbose.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ --verbose', 
+    { 'test/test_with_err_fail_pass.LUA', '--verbose', '--output tap', 'test/ref/errFailPassTapVerbose.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ --verbose', 
         '--output tap', 'test/ref/errFailPassTapVerbose-success.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ -p Fail --verbose', 
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ -p Fail --verbose', 
         '--output tap', 'test/ref/errFailPassTapVerbose-failures.txt' },
 }
 
 local filesToGenerateErrFailPassText = {
-    { 'test/test_with_err_fail_pass.lua', '', '--output text', 'test/ref/errFailPassTextDefault.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ', '--output text', 'test/ref/errFailPassTextDefault-success.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ -p Fail', '--output text', 'test/ref/errFailPassTextDefault-failures.txt' },
-    { 'test/test_with_err_fail_pass.lua', '--quiet', '--output text', 'test/ref/errFailPassTextQuiet.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ --quiet', 
+    { 'test/test_with_err_fail_pass.LUA', '', '--output text', 'test/ref/errFailPassTextDefault.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ', '--output text', 'test/ref/errFailPassTextDefault-success.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ -p Fail', '--output text', 'test/ref/errFailPassTextDefault-failures.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '--quiet', '--output text', 'test/ref/errFailPassTextQuiet.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ --quiet', 
         '--output text', 'test/ref/errFailPassTextQuiet-success.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ -p Fail --quiet', 
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ -p Fail --quiet', 
         '--output text', 'test/ref/errFailPassTextQuiet-failures.txt' },
-    { 'test/test_with_err_fail_pass.lua', '--verbose', '--output text', 'test/ref/errFailPassTextVerbose.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ --verbose', 
+    { 'test/test_with_err_fail_pass.LUA', '--verbose', '--output text', 'test/ref/errFailPassTextVerbose.txt' },
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ --verbose', 
         '--output text', 'test/ref/errFailPassTextVerbose-success.txt' },
-    { 'test/test_with_err_fail_pass.lua', '-p Succ -p Fail --verbose', 
+    { 'test/test_with_err_fail_pass.LUA', '-p Succ -p Fail --verbose', 
         '--output text', 'test/ref/errFailPassTextVerbose-failures.txt' },
 }
 
 local filesToGenerateTestXml = {
-    { 'test/test_with_xml.lua', '', '--output junit --name test/ref/testWithXmlDefault.xml', 'test/ref/testWithXmlDefault.txt' },
-    { 'test/test_with_xml.lua', '--verbose', '--output junit --name test/ref/testWithXmlVerbose.xml', 'test/ref/testWithXmlVerbose.txt' },
-    { 'test/test_with_xml.lua', '--quiet', '--output junit --name test/ref/testWithXmlQuiet.xml', 'test/ref/testWithXmlQuiet.txt' },
+    { 'test/test_with_xml.LUA', '', '--output junit --name test/ref/testWithXmlDefault.xml', 'test/ref/testWithXmlDefault.txt' },
+    { 'test/test_with_xml.LUA', '--verbose', '--output junit --name test/ref/testWithXmlVerbose.xml', 'test/ref/testWithXmlVerbose.txt' },
+    { 'test/test_with_xml.LUA', '--quiet', '--output junit --name test/ref/testWithXmlQuiet.xml', 'test/ref/testWithXmlQuiet.txt' },
 }
 
 local filesToGenerateStopOnError = {
-    { 'test/test_with_err_fail_pass.lua', '', '--output text --quiet -p Succ --error --failure',
+    { 'test/test_with_err_fail_pass.LUA', '', '--output text --quiet -p Succ --error --failure',
         'test/ref/errFailPassTextStopOnError-1.txt'},
-    { 'test/test_with_err_fail_pass.lua', '', '--output text --quiet -p TestSome --error',
+    { 'test/test_with_err_fail_pass.LUA', '', '--output text --quiet -p TestSome --error',
         'test/ref/errFailPassTextStopOnError-2.txt'},
-    { 'test/test_with_err_fail_pass.lua', '', '--output text --quiet -p TestAnoth --failure',
+    { 'test/test_with_err_fail_pass.LUA', '', '--output text --quiet -p TestAnoth --failure',
         'test/ref/errFailPassTextStopOnError-3.txt'},
-    { 'test/test_with_err_fail_pass.lua', '', '--output text --quiet -p TestSome --failure',
+    { 'test/test_with_err_fail_pass.LUA', '', '--output text --quiet -p TestSome --failure',
         'test/ref/errFailPassTextStopOnError-4.txt'},
 }
 
 local filesToGenerateListsComp = {
-    { 'test/some_lists_comparisons.lua', '', '--output text --verbose',
+    { 'test/some_lists_comparisons.LUA', '', '--output text --verbose',
         'test/ref/some_lists_comparisons.txt'},
 }
 
@@ -698,7 +698,7 @@ end
 
 local function main()
     if arg[1] == '--coverage' then
-        LUA = LUA .." -lluacov" -- run tests with LuaCov active
+        LUA = LUA .." -lLUAcov" -- run tests with LUACov active
         table.remove(arg, 1)
     end
     if arg[1] == '--update' then
@@ -728,7 +728,7 @@ local function main()
         os.exit(0)
     end
 
-    os.exit( lu.LuaUnit.run() )
+    os.exit( lu.LUAUnit.run() )
     -- body
 end
 

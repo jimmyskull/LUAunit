@@ -2,26 +2,26 @@
 import subprocess, sys, os, shutil, os.path, optparse, glob
 
 VERSION='3.3'
-RELEASE_NAME='luaunit-%s' % VERSION
+RELEASE_NAME='LUAunit-%s' % VERSION
 ROCK_RELEASE_NAME='rock-%s' % RELEASE_NAME
 RELEASE_DIR='release/' + RELEASE_NAME + '/'
 RELEASE_TAG='LUAUNIT_V3_3'
 TARGET_ZIP=RELEASE_NAME + '.zip'
 TARGET_TGZ=RELEASE_NAME + '.tgz'
-REPO_PATH='d:/work/luaunit/luaunit1'
+REPO_PATH='d:/work/LUAunit/LUAunit1'
 
-# LUA50='d:/program/dev/lua/lua50/lua50.exe'
-LUA51='d:/program/dev/lua/lua51/lua51.exe'
-LUA52='d:/program/dev/lua/lua52/lua52.exe'
-LUA53='d:/program/dev/lua/lua53/lua53.exe'
-LUAJIT='d:/program/dev/lua/luajit/luajit.exe'
+# LUA50='d:/program/dev/LUA/LUA50/LUA50.exe'
+LUA51='d:/program/dev/LUA/LUA51/LUA51.exe'
+LUA52='d:/program/dev/LUA/LUA52/LUA52.exe'
+LUA53='d:/program/dev/LUA/LUA53/LUA53.exe'
+LUAJIT='d:/program/dev/LUA/LUAjit/LUAjit.exe'
 
 ALL_LUA = ( 
-    (LUA53, 'lua 5.3'), 
-    (LUA52, 'lua 5.2'), 
-    (LUA51, 'lua 5.1'), 
-    (LUAJIT, 'lua JIT'), 
-#    (LUA50, 'lua 5.0'),    no longer supported...
+    (LUA53, 'LUA 5.3'), 
+    (LUA52, 'LUA 5.2'), 
+    (LUA51, 'LUA 5.1'), 
+    (LUAJIT, 'LUA JIT'), 
+#    (LUA50, 'LUA 5.0'),    no longer supported...
 )
 
 os.environ["nodosfilewarning"] = "1"
@@ -30,39 +30,39 @@ def report( s ):
     print( '[[[[[[[[[[[[[ %s ]]]]]]]]]]]]]' % s )
 
 def run_unit_tests():
-    '''Run unit-tests with all versions of lua'''
-    for lua, luaversion in ALL_LUA:
-        report( 'Running unit-tests tests with %s' % luaversion )
-        retcode = subprocess.call( [lua, 'run_unit_tests.lua'] )
+    '''Run unit-tests with all versions of LUA'''
+    for LUA, LUAversion in ALL_LUA:
+        report( 'Running unit-tests tests with %s' % LUAversion )
+        retcode = subprocess.call( [LUA, 'run_unit_tests.LUA'] )
         if retcode != 0:
             report( 'Invalid retcode when running tests: %d' % retcode )
             sys.exit( retcode )
 
 def run_tests():
-    '''Run tests with all versions of lua'''
+    '''Run tests with all versions of LUA'''
     run_unit_tests()
 
-    for lua, luaversion in ALL_LUA:
-        report( 'Running functional tests tests with %s' % luaversion )
-        retcode = subprocess.call( [lua, 'run_functional_tests.lua'] )
+    for LUA, LUAversion in ALL_LUA:
+        report( 'Running functional tests tests with %s' % LUAversion )
+        retcode = subprocess.call( [LUA, 'run_functional_tests.LUA'] )
         if retcode != 0:
             report( 'Invalid retcode when running tests: %d' % retcode )
             sys.exit( retcode )
 
-    run_luacheck()
+    run_LUAcheck()
     report( 'All tests succeed!' )
 
-def run_luacheck():
-    report('Running luacheck')
-    retcode = subprocess.call( ['luacheck.bat', '*.lua', 'test' ] )
+def run_LUAcheck():
+    report('Running LUAcheck')
+    retcode = subprocess.call( ['LUAcheck.bat', '*.LUA', 'test' ] )
     if retcode != 0:
-        report( 'Invalid luacheck result' )
+        report( 'Invalid LUAcheck result' )
         sys.exit( retcode )
 
 def run_example():
-    for lua, luaversion in ALL_LUA:
-        report( 'Running examples with %s' % luaversion )
-        retcode = subprocess.call( [lua, 'example_with_luaunit.lua'] )
+    for LUA, LUAversion in ALL_LUA:
+        report( 'Running examples with %s' % LUAversion )
+        retcode = subprocess.call( [LUA, 'example_with_LUAunit.LUA'] )
         if retcode != 12:
             report( 'Invalid retcode when running examples: %d' % retcode )
             sys.exit( retcode )
@@ -97,12 +97,12 @@ def pre_packageit_or_buildrock_step1():
     os.rename( 'doc', 'olddoc' )
     shutil.copytree( 'olddoc/html', 'doc')
     os.unlink('doc/.buildinfo')
-    shutil.copy( 'olddoc/my_test_suite.lua', 'doc')
+    shutil.copy( 'olddoc/my_test_suite.LUA', 'doc')
     shutil.rmtree('olddoc/')
     
     run_tests()
     run_example()
-    os.unlink('.luacheckrc')    # keep it to run the tests successfully
+    os.unlink('.LUAcheckrc')    # keep it to run the tests successfully
 
 def packageit():
     # Prepare a user release package, strip out all development stuff
@@ -120,14 +120,14 @@ def buildrock():
 
     # Packaging into source rocks
     report('Start preparing rock')
-    shutil.move('test/test_luaunit.lua', '.')
+    shutil.move('test/test_LUAunit.LUA', '.')
     shutil.rmtree('test')
     os.mkdir('test')
-    shutil.move('test_luaunit.lua', 'test')
-    shutil.move('run_unit_tests.lua', 'test')
+    shutil.move('test_LUAunit.LUA', 'test')
+    shutil.move('run_unit_tests.LUA', 'test')
 
-    for p in glob.glob('*.lua'):
-        if p == 'luaunit.lua': 
+    for p in glob.glob('*.LUA'):
+        if p == 'LUAunit.LUA': 
             continue
         os.unlink(p) 
     os.unlink('README.md')
@@ -152,54 +152,54 @@ def makedoc():
     os.chdir('..')
 
 def rundoctests():
-    lua = LUA52
+    LUA = LUA52
     for expretcode, l in (
-            (0, [ '-e', "lu = require('luaunit');os.exit(lu.LuaUnit.run())" ]),
-            (0, [ 'doc/my_test_suite.lua', '-v', 'TestAdd.testAddPositive', 'TestAdd.testAddZero']),
-            (0, [ 'doc/my_test_suite.lua', '-v' ]),
-            (0, [ 'doc/my_test_suite.lua', ]),
-            (0, [ 'doc/my_test_suite.lua', '-o','TAP']),
-            (0, [ 'doc/my_test_suite.lua', 'TestAdd', 'TestDiv.testDivError' , '-v']),
-            (0, [ 'doc/my_test_suite.lua', '-v', '-p', 'Err.r', '-p', 'Z.ro' ]),
-            (0, [ 'doc/my_test_suite.lua', '-v', '--pattern', 'Add', '--exclude', 'Adder', '--pattern', 'Zero' ]),
-            (0, [ 'doc/my_test_suite.lua', '-v', '-x', 'Error', '-x', 'Zero' ]),
-            (2, [ 'doc/my_test_suite_with_failures.lua', '-o', 'text' ]),
-            (2, [ 'doc/my_test_suite_with_failures.lua', '-o', 'text', '--verbose' ]),
-            (2, [ 'doc/my_test_suite_with_failures.lua', '-o', 'tap', '--quiet' ]),
-            (2, [ 'doc/my_test_suite_with_failures.lua', '-o', 'tap' ]),
-            (2, [ 'doc/my_test_suite_with_failures.lua', '-o', 'tap', '--verbose' ]),
-            (2, [ 'doc/my_test_suite_with_failures.lua', '-o', 'nil', '--verbose' ]),
+            (0, [ '-e', "lu = require('LUAunit');os.exit(lu.LUAUnit.run())" ]),
+            (0, [ 'doc/my_test_suite.LUA', '-v', 'TestAdd.testAddPositive', 'TestAdd.testAddZero']),
+            (0, [ 'doc/my_test_suite.LUA', '-v' ]),
+            (0, [ 'doc/my_test_suite.LUA', ]),
+            (0, [ 'doc/my_test_suite.LUA', '-o','TAP']),
+            (0, [ 'doc/my_test_suite.LUA', 'TestAdd', 'TestDiv.testDivError' , '-v']),
+            (0, [ 'doc/my_test_suite.LUA', '-v', '-p', 'Err.r', '-p', 'Z.ro' ]),
+            (0, [ 'doc/my_test_suite.LUA', '-v', '--pattern', 'Add', '--exclude', 'Adder', '--pattern', 'Zero' ]),
+            (0, [ 'doc/my_test_suite.LUA', '-v', '-x', 'Error', '-x', 'Zero' ]),
+            (2, [ 'doc/my_test_suite_with_failures.LUA', '-o', 'text' ]),
+            (2, [ 'doc/my_test_suite_with_failures.LUA', '-o', 'text', '--verbose' ]),
+            (2, [ 'doc/my_test_suite_with_failures.LUA', '-o', 'tap', '--quiet' ]),
+            (2, [ 'doc/my_test_suite_with_failures.LUA', '-o', 'tap' ]),
+            (2, [ 'doc/my_test_suite_with_failures.LUA', '-o', 'tap', '--verbose' ]),
+            (2, [ 'doc/my_test_suite_with_failures.LUA', '-o', 'nil', '--verbose' ]),
         ):
-        print( '%s %s' % ('\n$ lua', ' '.join(l).replace('doc/', '')  ) )
-        retcode = subprocess.call( [lua] + l )
+        print( '%s %s' % ('\n$ LUA', ' '.join(l).replace('doc/', '')  ) )
+        retcode = subprocess.call( [LUA] + l )
         if retcode != expretcode:
-            report( 'Invalid luacheck result' )
+            report( 'Invalid LUAcheck result' )
             sys.exit( retcode )
 
     for expretcode, l in (
-            (2, [ 'doc/my_test_suite_with_failures.lua', '-o', 'junit', '-n', 'toto.xml' ]),
+            (2, [ 'doc/my_test_suite_with_failures.LUA', '-o', 'junit', '-n', 'toto.xml' ]),
         ):
-        print( '%s %s' % ('\n$ lua', ' '.join(l).replace('doc/', '')  ) )
-        retcode = subprocess.call( [lua] + l )
+        print( '%s %s' % ('\n$ LUA', ' '.join(l).replace('doc/', '')  ) )
+        retcode = subprocess.call( [LUA] + l )
         if retcode != expretcode:
-            report( 'Invalid luacheck result' )
+            report( 'Invalid LUAcheck result' )
             sys.exit( retcode )
 
         print( open('toto.xml').read() )
 
 def install():
-    installpath = '/usr/local/share/lua/'
-    for lua, luaversion in ALL_LUA:
-        lua,ver = luaversion.split( )
+    installpath = '/usr/local/share/LUA/'
+    for LUA, LUAversion in ALL_LUA:
+        LUA,ver = LUAversion.split( )
         if os.path.exists(installpath+ver):
-            shutil.copy('luaunit.lua',installpath+ver)
+            shutil.copy('LUAunit.LUA',installpath+ver)
             
 
 
 OptToFunc = {
     'rununittests'  : run_unit_tests,
     'runtests'      : run_tests,
-    'luacheck'      : run_luacheck,
+    'LUAcheck'      : run_LUAcheck,
     'runexample'    : run_example,
     'packageit'     : packageit,
     'buildrock'     : buildrock,

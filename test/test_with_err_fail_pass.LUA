@@ -1,4 +1,4 @@
-local lu = require('luaunit')
+local lu = require('LUAunit')
 
 --[[ Test used by functional tests ]]
 TestSomething = {} --class
@@ -66,6 +66,6 @@ function testFuncErr1()
     local v = 1 + { 1,2 }
 end
 
-local runner = lu.LuaUnit.new()
+local runner = lu.LUAUnit.new()
 runner:setOutputType("text")
 os.exit( runner:runSuite() )

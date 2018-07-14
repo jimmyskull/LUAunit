@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# LuaUnit documentation build configuration file, created by
+# LUAUnit documentation build configuration file, created by
 # sphinx-quickstart on Thu Aug 21 21:45:55 2014.
 #
 # This file is execfile()d with the current directory set to its
@@ -43,7 +43,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'LuaUnit'
+project = u'LUAUnit'
 copyright = u'2016, Philippe Fremy'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -176,7 +176,7 @@ html_last_updated_fmt = '%b %d, %Y'
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'LuaUnitdoc'
+htmlhelp_basename = 'LUAUnitdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -196,7 +196,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'LuaUnit.tex', u'LuaUnit Documentation',
+  ('index', 'LUAUnit.tex', u'LUAUnit Documentation',
    u'Philippe Fremy', 'manual'),
 ]
 
@@ -226,7 +226,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'luaunit', u'LuaUnit Documentation',
+    ('index', 'LUAunit', u'LUAUnit Documentation',
      [u'Philippe Fremy'], 1)
 ]
 
@@ -240,8 +240,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'LuaUnit', u'LuaUnit Documentation',
-   u'Philippe Fremy', 'LuaUnit', 'One line description of project.',
+  ('index', 'LUAUnit', u'LUAUnit Documentation',
+   u'Philippe Fremy', 'LUAUnit', 'One line description of project.',
    'Miscellaneous'),
 ]
 

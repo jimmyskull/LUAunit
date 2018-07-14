@@ -32,10 +32,10 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 
-# LuaCov output (stats and report)
-luacov.*.out
+# LUACov output (stats and report)
+LUAcov.*.out
 
-# LuaUnit ignores
+# LUAUnit ignores
 [Tt]est[Rr]esult*
 *.sublime-project
 *.lsln
@@ -54,7 +54,7 @@ test/unitTests*.xml
 test/unitTests*.txt
 test/legacyExample.txt
 test/legacyExampleError.txt
-test/compat_luaunit_v2x.txt
+test/compat_LUAunit_v2x.txt
 test/errFailPass*.txt
 test/errFailPass*.xml
 test/some_lists_comparisons.txt

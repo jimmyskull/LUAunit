@@ -7,28 +7,28 @@ env:
   global:
     - LUAROCKS=2.2.2
   matrix:
-    - LUA=lua5.1  LUANUMBER=double
-    - LUA=lua5.1  LUANUMBER=float
-    - LUA=lua5.2  LUANUMBER=double
-    - LUA=lua5.2  LUANUMBER=float
-    - LUA=lua5.3  LUANUMBER=double
-    - LUA=lua5.3  LUANUMBER=float
-    - LUA=luajit     # latest stable version (2.0.x)
-    - LUA=luajit2.0  # current head of 2.0 branch
-    - LUA=luajit2.1  # current head of 2.1 branch
+    - LUA=LUA5.1  LUANUMBER=double
+    - LUA=LUA5.1  LUANUMBER=float
+    - LUA=LUA5.2  LUANUMBER=double
+    - LUA=LUA5.2  LUANUMBER=float
+    - LUA=LUA5.3  LUANUMBER=double
+    - LUA=LUA5.3  LUANUMBER=float
+    - LUA=LUAjit     # latest stable version (2.0.x)
+    - LUA=LUAjit2.0  # current head of 2.0 branch
+    - LUA=LUAjit2.1  # current head of 2.1 branch
 
 matrix:
   # test Mac OS X, but limit it to a single build
   include:
     - os: osx
-      env: LUA=lua5.1 LUANUMBER=double
-  # 'bleeding edge' LuaJIT may fail without breaking the build
+      env: LUA=LUA5.1 LUANUMBER=double
+  # 'bleeding edge' LUAJIT may fail without breaking the build
   allow_failures:
-    - env: LUA=luajit2.0
-    - env: LUA=luajit2.1
+    - env: LUA=LUAjit2.0
+    - env: LUA=LUAjit2.1
 
 before_install:
-  - source .travis/setenv_lua.sh
+  - source .travis/setenv_LUA.sh
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y libxml2-utils; fi
 
 cache:
@@ -36,12 +36,12 @@ cache:
     - $TRAVIS_BUILD_DIR/install
 
 script: 
-  - lua -v -lluacov run_unit_tests.lua --shuffle
-  - lua run_functional_tests.lua --coverage
-  - luacheck *.lua test/
+  - LUA -v -lLUAcov run_unit_tests.LUA --shuffle
+  - LUA run_functional_tests.LUA --coverage
+  - LUAcheck *.LUA test/
 
 after_success:
-  - luacov-coveralls -v --include %./luaunit.lua
+  - LUAcov-coveralls -v --include %./LUAunit.LUA
 
 notifications:
   email:

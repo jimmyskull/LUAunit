@@ -1,19 +1,19 @@
 EXPORT_ASSERT_TO_GLOBALS = true
-local lu = require('luaunit')
+local lu = require('LUAunit')
 
 --[[
-Use Luaunit in the v2.1 fashion and check that it still works. 
-Exercise every luaunit v2.1 function and have it executed successfully.
+Use LUAunit in the v2.1 fashion and check that it still works. 
+Exercise every LUAunit v2.1 function and have it executed successfully.
 
 Coverage:
-x Made LuaUnit:run() method able to be called with 'run' or 'Run'.
-x Made LuaUnit.wrapFunctions() function able to be called with 'wrapFunctions' or 'WrapFunctions' or 'wrap_functions'.
-x Moved wrapFunctions to the LuaUnit module table (e.g. local LuaUnit = require( "luaunit" ); LuaUnit.wrapFunctions( ... ) )
-x Added LuaUnit.is<Type> and LuaUnit.is_<type> helper functions. (e.g. assert( LuaUnit.isString( getString() ) )
+x Made LUAUnit:run() method able to be called with 'run' or 'Run'.
+x Made LUAUnit.wrapFunctions() function able to be called with 'wrapFunctions' or 'WrapFunctions' or 'wrap_functions'.
+x Moved wrapFunctions to the LUAUnit module table (e.g. local LUAUnit = require( "LUAunit" ); LUAUnit.wrapFunctions( ... ) )
+x Added LUAUnit.is<Type> and LUAUnit.is_<type> helper functions. (e.g. assert( LUAUnit.isString( getString() ) )
 x Added assert<Type> and assert_<type> 
 x Added assertNot<Type> and assert_not_<type>
-x Added _VERSION variable to hold the LuaUnit version
-x Added LuaUnit:setVerbosity(lvl) method to the LuaUnit. Alias: LuaUnit:SetVerbosity() and LuaUnit:set_verbosity().
+x Added _VERSION variable to hold the LUAUnit version
+x Added LUAUnit:setVerbosity(lvl) method to the LUAUnit. Alias: LUAUnit:SetVerbosity() and LUAUnit:set_verbosity().
 x Added table deep compare
 x check that wrapFunctions works
 x Made "testable" classes able to start with 'test' or 'Test' for their name.
@@ -23,15 +23,15 @@ x Made testClass:tearDown() methods able to be named with 'tearDown' or 'TearDow
 ]]
 
 
-TestLuaUnitV2Compat = {}
+TestLUAUnitV2Compat = {}
 
-function TestLuaUnitV2Compat:testRunAliases()
+function TestLUAUnitV2Compat:testRunAliases()
     -- some old function
     assertFunction( lu.run )
     assertEquals( lu.Run, lu.run )
 end
 
-function TestLuaUnitV2Compat:testWrapFunctionsAliases()
+function TestLUAUnitV2Compat:testWrapFunctionsAliases()
     assertFunction( lu.wrapFunctions )
     assertEquals( lu.wrapFunctions, lu.WrapFunctions )
     assertEquals( lu.wrapFunctions, lu.wrap_functions )
@@ -44,7 +44,7 @@ local function typeAsserter( goodType, badType, goodAsserter, badAsserter )
     end
 end
 
-function TestLuaUnitV2Compat:testAssertType()
+function TestLUAUnitV2Compat:testAssertType()
     local f = function (v) return v+1 end
     local t = coroutine.create( function(v) local y=v+1 end )
     local typesToVerify = {
@@ -103,14 +103,14 @@ function TestLuaUnitV2Compat:testAssertType()
 
 end
 
-function TestLuaUnitV2Compat:testHasVersionKey()
+function TestLUAUnitV2Compat:testHasVersionKey()
     assertNotNil( lu.VERSION )
     assertString( lu.VERSION )
     assertNotNil( lu._VERSION )
     assertTrue( lu.is_string( lu._VERSION ) )
 end
 
-function TestLuaUnitV2Compat:testTableEquality()
+function TestLUAUnitV2Compat:testTableEquality()
     local t1 = {1,2}
     local t2 = t1
     local t3 = {1,2}
@@ -118,7 +118,7 @@ function TestLuaUnitV2Compat:testTableEquality()
 
     assertEquals( t1, t1 )
     assertEquals( t1, t2 )
-    -- new in LuaUnit v2.0 , deep table compare
+    -- new in LUAUnit v2.0 , deep table compare
     assertEquals( t1, t3 )
     assertError( assertEquals, t1, t4 )
 end

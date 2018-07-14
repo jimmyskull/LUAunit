@@ -1,5 +1,5 @@
 
-local lu = require('luaunit')
+local lu = require('LUAunit')
 
 local function range(start, stop)
     -- return list of { start ... stop }

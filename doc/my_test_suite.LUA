@@ -3,7 +3,7 @@
 -- The examples described in the documentation are below.
 --
 
-lu = require('luaunit')
+lu = require('LUAunit')
 
 function add(v1,v2)
     -- add positive numbers
@@ -124,4 +124,4 @@ TestLogger = {}
 
 ]]
 
-os.exit(lu.LuaUnit.run())
+os.exit(lu.LUAUnit.run())
